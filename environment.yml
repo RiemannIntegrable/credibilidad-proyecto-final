@@ -3,120 +3,30 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  # ============================================================================
-  # Python y entorno base
-  # ============================================================================
   - python=3.12
-
-  # ============================================================================
-  # Jupyter y desarrollo interactivo
-  # ============================================================================
   - jupyter
   - jupyterlab
   - notebook
   - ipywidgets
-  - ipykernel
-
-  # ============================================================================
-  # Computación científica y álgebra lineal
-  # ============================================================================
-  - numpy>=1.26
-  - scipy>=1.11
-  - sympy
-
-  # ============================================================================
-  # Análisis y manipulación de datos
-  # ============================================================================
-  - pandas>=2.1
-  - openpyxl  # Para leer/escribir Excel
-  - xlrd      # Para leer archivos .xls antiguos
-  - tabulate  # Para tablas bonitas en terminal
-
-  # ============================================================================
-  # Estadística y modelación
-  # ============================================================================
-  - statsmodels>=0.14
-  - patsy  # Fórmulas estadísticas estilo R
-  - scikit-learn>=1.3
-
-  # ============================================================================
-  # Visualización de datos
-  # ============================================================================
-  - matplotlib>=3.8
-  - seaborn>=0.13
-  - plotly>=5.18
-  - bokeh
-  - altair
-
-  # ============================================================================
-  # Ajuste de distribuciones y estadística avanzada
-  # ============================================================================
-  - lifelines  # Análisis de supervivencia
-  - pymc       # Inferencia Bayesiana
-  - arviz      # Visualización para modelos Bayesianos
-
-  # ============================================================================
-  # Optimización y álgebra numérica
-  # ============================================================================
-  - numba      # Compilación JIT para acelerar código
-  - numexpr    # Evaluación rápida de expresiones numéricas
-
-  # ============================================================================
-  # Utilidades y herramientas
-  # ============================================================================
-  - tqdm       # Barras de progreso
-  - joblib     # Paralelización y caché
-  - dill       # Serialización extendida
-
-  # ============================================================================
-  # Control de calidad de código
-  # ============================================================================
-  - black      # Formateo automático
-  - flake8     # Linting
-  - pylint     # Análisis estático
-  - mypy       # Type checking
-
-  # ============================================================================
-  # Testing
-  # ============================================================================
+  - numpy
+  - scipy
+  - pandas
+  - matplotlib
+  - seaborn
+  - plotly
+  - statsmodels
+  - scikit-learn
+  - lifelines
+  - pymc
+  - arviz
+  - numba
+  - tqdm
+  - black
   - pytest
-  - pytest-cov
-  - hypothesis
-
-  # ============================================================================
-  # Paquetes via pip (no disponibles en conda)
-  # ============================================================================
   - pip
   - pip:
-    # Credibilidad y actuaría
-    - actuarialmath  # Matemáticas actuariales
-    - lifelines      # Ya está en conda, pero aseguramos última versión
-
-    # Ajuste avanzado de distribuciones
-    - fitter         # Ajuste automático de distribuciones
-    - distfit        # Otra librería para ajuste de distribuciones
-
-    # Estadística robusta
-    - pingouin       # Estadística con pandas
-    - scikit-posthocs  # Post-hoc tests
-
-    # Visualización adicional
-    - plotnine       # ggplot2 para Python
-    - watermark      # Info de versiones en notebooks
-
-    # Análisis de series temporales
-    - prophet        # Forecasting de Facebook
-
-    # Optimización numérica adicional
-    - pyomo          # Optimización matemática
-
-    # Utilidades para notebooks
-    - notebook-as-pdf  # Exportar notebooks a PDF
-    - rise           # Presentaciones desde Jupyter
-
-# ============================================================================
-# Variables de entorno (opcional)
-# ============================================================================
-# variables:
-#   OMP_NUM_THREADS: 4
-#   MKL_NUM_THREADS: 4
+    - actuarialmath
+    - fitter
+    - distfit
+    - pingouin
+    - plotnine
