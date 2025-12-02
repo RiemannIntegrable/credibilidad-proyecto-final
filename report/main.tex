@@ -1,0 +1,133 @@
+\documentclass[12pt,a4paper]{article}
+
+% =====================
+% PAQUETES
+% =====================
+\input{config/packages}
+
+% =====================
+% ESTILOS E IDENTIDAD CORPORATIVA
+% =====================
+\input{config/doc_style_simple}
+
+% =====================
+% COMANDOS
+% =====================
+\input{config/commands_simple}
+
+% =====================
+% VARIABLES DEL DOCUMENTO
+% =====================
+
+% Estas variables deben ser completadas para cada nota técnica específica
+% Los códigos completos se generan automáticamente a partir de estos componentes
+
+% Fechas
+\setFechaCodigo{30/10/2025}                              % Formato dd/mm/yyyy (10 caracteres)
+\setFechaElaboracion{30 de Octubre de 2025}               % Formato legible para portada
+
+% Componentes de códigos de identificación
+\setCodigoEmpresa{1435}                                  % EKG (4 caracteres)
+\setTipoDocumento{NT}                                    % NT=Nota Técnica, AN=Anexo (2 caracteres)
+\setRamo{P-34}                                           % Formato: letra-número
+\setCodigoInterno{SEGESCFAMILAR001}                      % Código interno del producto (16 caracteres)
+\setCanalComercializacion{D00I}                          % Canal de comercialización (4 caracteres)
+
+% Nombre del producto
+\setNombreProducto{Poliza de Seguro Escolar Familiar}
+
+% Los códigos completos se generan automáticamente:
+% Código Nota Técnica:  \codigoNotaTecnica  → 03/10/2025-1435-NT-P-31-APINDMOVISTAR001
+% Código Condicionado:  \codigoCondicionado → 03/10/2025-1435-P-31-APINDMOVISTAR001-D00I
+
+% Información del actuario principal
+\setActuarioPrincipal{Jose Miguel Acuña Hernandez}
+\setMatriculaActuario{C.C. 1.000.143.264}
+\setCredencialesActuario{Actuario EKG}
+
+% =============================================================================
+% CONFIGURACIÓN DEL DOCUMENTO
+% =============================================================================
+
+% Configuración específica de geometría e hiperenlaces se encuentra en doc_style_simple.tex
+% Configurar metadata PDF ahora que las variables están definidas
+\configurarMetadataPDF
+
+% =============================================================================
+% INICIO DEL DOCUMENTO
+% =============================================================================
+
+\begin{document}
+
+% -----------------------------------------------------------------------------
+% PORTADA (SIN NUMERACIÓN)
+% -----------------------------------------------------------------------------
+\thispagestyle{portada}
+\crearPortada
+\clearpage
+
+% -----------------------------------------------------------------------------
+% TABLA DE CONTENIDOS (SIN NUMERACIÓN)
+% -----------------------------------------------------------------------------
+\pagenumbering{gobble} % Sin numeración
+\tableofcontents
+
+\vspace{1.5cm}
+
+\listoftables
+
+\vspace{1.5cm}
+
+\listoffigures
+
+\clearpage
+
+%-----------------------------------------------------------------------------
+% INICIO DEL CONTENIDO PRINCIPAL
+%-----------------------------------------------------------------------------
+% Activar formato de secciones alineadas a la derecha (no afecta índices anteriores)
+\aplicarFormatoSeccionesContenido
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+\setcounter{section}{0}
+\usarNumeracionArabiga
+\pagestyle{fancy}
+
+% Sección 1: Identificación de la Nota Técnica
+\input{content/01_identificacion}
+\clearpage
+
+% Sección 2: Descripción del Producto
+\input{content/02_descripcion_producto}
+\clearpage
+
+% Sección 3: Bases Técnicas
+\input{content/03_bases_tecnicas}
+\clearpage
+
+% Sección 4: Resultados
+\input{content/04_resultados}
+\clearpage
+
+% Sección 5: Firmas
+\input{content/05_firmas}
+\clearpage
+
+% -----------------------------------------------------------------------------
+% APÉNDICES CON NUMERACIÓN ROMANA (SIN LETRAS A, B, C)
+% -----------------------------------------------------------------------------
+\pagenumbering{roman}
+\setcounter{page}{1}
+
+% Asegurar que el índice use numeración romana minúscula
+\addtocontents{toc}{\protect\renewcommand{\protect\thepage}{\roman{page}}}
+
+% Anexos técnicos (sin numeración de sección)
+\input{content/07_anexos}
+\clearpage
+
+% Bibliografía (sin numeración de sección, generada automáticamente)
+\input{content/06_bibliografia}
+
+\end{document}

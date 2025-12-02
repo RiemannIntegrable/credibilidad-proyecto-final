@@ -1,0 +1,340 @@
+% =============================================================================
+% COMANDOS PERSONALIZADOS PARA NOTA TÉCNICA EKG (SIMPLIFICADO)
+% =============================================================================
+
+% -----------------------------------------------------------------------------
+% COMANDOS DE BIBLIOGRAFÍA
+% -----------------------------------------------------------------------------
+% Los comandos de citación (\cite, \citep, \citet) son provistos por natbib
+% No es necesario definirlos aquí
+
+% -----------------------------------------------------------------------------
+% VARIABLES GLOBALES DEL DOCUMENTO
+% -----------------------------------------------------------------------------
+
+% -----------------------------------------------------------------------------
+% COMPONENTES DE CÓDIGOS DE IDENTIFICACIÓN
+% -----------------------------------------------------------------------------
+% Estos componentes se combinan automáticamente para generar los códigos completos
+
+% Fecha en formato numérico dd/mm/yyyy (10 caracteres)
+\newcommand{\fechaCodigo}{}
+\newcommand{\setFechaCodigo}[1]{\renewcommand{\fechaCodigo}{#1}}
+
+% Fecha en formato legible (para portada y documentación)
+\newcommand{\fechaElaboracion}{}
+\newcommand{\setFechaElaboracion}[1]{\renewcommand{\fechaElaboracion}{#1}}
+
+% Código de la empresa (4 caracteres) - EKG: 1435
+\newcommand{\codigoEmpresa}{}
+\newcommand{\setCodigoEmpresa}[1]{\renewcommand{\codigoEmpresa}{#1}}
+
+% Tipo de documento (2 caracteres) - NT: Nota Técnica, AN: Anexo
+\newcommand{\tipoDocumento}{}
+\newcommand{\setTipoDocumento}[1]{\renewcommand{\tipoDocumento}{#1}}
+
+% Identificador del ramo (formato: letra-número) - Ejemplo: P-31
+\newcommand{\ramo}{}
+\newcommand{\setRamo}[1]{\renewcommand{\ramo}{#1}}
+
+% Código interno del producto (16 caracteres alfanuméricos)
+\newcommand{\codigoInterno}{}
+\newcommand{\setCodigoInterno}[1]{\renewcommand{\codigoInterno}{#1}}
+
+% Canal de comercialización (4 caracteres) - Ejemplo: D00I
+\newcommand{\canalComercializacion}{}
+\newcommand{\setCanalComercializacion}[1]{\renewcommand{\canalComercializacion}{#1}}
+
+% Nombre del producto
+\newcommand{\nombreProducto}{}
+\newcommand{\setNombreProducto}[1]{\renewcommand{\nombreProducto}{#1}}
+
+% -----------------------------------------------------------------------------
+% CÓDIGOS COMPLETOS (GENERADOS AUTOMÁTICAMENTE)
+% -----------------------------------------------------------------------------
+% Estos se construyen automáticamente a partir de los componentes anteriores
+
+% Código de Nota Técnica: fecha-empresa-tipo-ramo-interno
+% Ejemplo: 03/10/2025-1435-NT-P-31-APINDMOVISTAR001
+\newcommand{\codigoNotaTecnica}{\fechaCodigo-\codigoEmpresa-\tipoDocumento-\ramo-\codigoInterno}
+
+% Código de Condicionado: fecha-empresa-ramo-interno-canal
+% Ejemplo: 03/10/2025-1435-P-31-APINDMOVISTAR001-D00I
+\newcommand{\codigoCondicionado}{\fechaCodigo-\codigoEmpresa-\ramo-\codigoInterno-\canalComercializacion}
+
+\newcommand{\actuarioPrincipal}{}
+\newcommand{\setActuarioPrincipal}[1]{\renewcommand{\actuarioPrincipal}{#1}}
+
+\newcommand{\matriculaActuario}{}
+\newcommand{\setMatriculaActuario}[1]{\renewcommand{\matriculaActuario}{#1}}
+
+\newcommand{\credencialesActuario}{}
+\newcommand{\setCredencialesActuario}[1]{\renewcommand{\credencialesActuario}{#1}}
+
+% -----------------------------------------------------------------------------
+% COMANDO PARA CREAR LA PORTADA
+% -----------------------------------------------------------------------------
+\newcommand{\crearPortada}{
+    \begin{titlepage}
+        \centering
+        \vspace*{-2cm}
+        
+        % Título principal
+        {\color{EKGAzulPrincipal}\titlefont\Huge\bfseries NOTA TÉCNICA}
+
+        \vspace{1cm}
+
+        % Nombre del producto
+        {\color{EKGAzulPrincipal}\subtitlefont\LARGE\bfseries \nombreProducto}
+        
+        % Imagen de protección EKG ocupando toda la página de extremo a extremo
+        \begin{tikzpicture}[remember picture,overlay]
+            \node[inner sep=0pt] at ([yshift=1cm]current page.center) {%
+                \includegraphics[width=\paperwidth,height=0.45\paperheight,keepaspectratio=false]{images/Protección EKG.jpg}%
+            };
+        \end{tikzpicture}
+
+        \vspace{15.5cm} % Espacio para compensar la imagen y dar margen adicional
+        
+        % Elemento visual corporativo
+        {\color{EKGAzulPrincipal}\rule{\textwidth}{3pt}}
+        
+        \vspace{0.8cm}
+        
+        % Tabla de información básica
+        \begin{center}
+        \begin{tabular}{|>{\columncolor{EKGAzulClaro}}p{6cm}|p{10cm}|}
+        \hline
+        Vigencia desde & \fechaElaboracion \\
+        \hline
+        Nota Técnica & \codigoNotaTecnica \\
+        \hline
+        Condicionado & \codigoCondicionado \\
+        \hline
+        \end{tabular}
+        \end{center}
+        
+    \end{titlepage}
+    \newpage
+}
+
+% -----------------------------------------------------------------------------
+% COMANDO PARA TABLA DE TARIFAS ACTUARIALES
+% -----------------------------------------------------------------------------
+\newcommand{\tablaTarifas}[4]{
+    \begin{table}[H]
+        \centering
+        \caption{#1}
+        \begin{tabular}{|H|c|c|c|}
+        \hline
+        \rowcolor{EKGAzulPrincipal!20}
+        \textbf{Edad} & \textbf{Hombres} & \textbf{Mujeres} & \textbf{Unisex} \\
+        \hline
+        #2 & #3 & #4 \\
+        \hline
+        \end{tabular}
+        \label{tab:#1}
+    \end{table}
+}
+
+% -----------------------------------------------------------------------------
+% COMANDO PARA FÓRMULAS ACTUARIALES
+% -----------------------------------------------------------------------------
+\newcommand{\formulaActuarial}[3]{
+    \begin{equation}
+        \label{eq:#1}
+        #2
+    \end{equation}
+    \begin{center}
+        \textit{#3}
+    \end{center}
+}
+
+% -----------------------------------------------------------------------------
+% COMANDO PARA CREAR GRÁFICO ACTUARIAL
+% -----------------------------------------------------------------------------
+\newcommand{\graficoActuarial}[4]{
+    \begin{figure}[H]
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                ekg style,
+                xlabel={#2},
+                ylabel={#3},
+                title={#1}
+            ]
+            #4
+            \end{axis}
+        \end{tikzpicture}
+        \caption{#1}
+        \label{fig:#1}
+    \end{figure}
+}
+
+% -----------------------------------------------------------------------------
+% COMANDO PARA DESTACAR INFORMACIÓN REGULATORIA
+% -----------------------------------------------------------------------------
+\newcommand{\infoRegulatoria}[1]{
+    \begin{center}
+    \fcolorbox{EKGAzulPrincipal}{EKGAzulClaro}{
+        \begin{minipage}{0.9\textwidth}
+            \textcolor{EKGGrisOscuro}{\textbf{INFORMACIÓN REGULATORIA:}}
+            \vspace{0.3cm}
+            
+            #1
+        \end{minipage}
+    }
+    \end{center}
+}
+
+% -----------------------------------------------------------------------------
+% COMANDOS MATEMÁTICOS ACTUARIALES
+% -----------------------------------------------------------------------------
+
+% Comando para esperanza matemática
+\newcommand{\E}{\mathbb{E}}
+
+% Comando para probabilidad
+\newcommand{\Prob}{\mathbb{P}}
+
+% Comando para varianza
+\newcommand{\Var}{\text{Var}}
+
+% -----------------------------------------------------------------------------
+% COMANDO PARA CÓDIGO DE NOTA TÉCNICA EN FORMATO REQUERIDO
+% -----------------------------------------------------------------------------
+\newcommand{\mostrarCodigoCompleto}{
+    \begin{center}
+    \textcolor{EKGAzulPrincipal}{\textbf{Código de Identificación:}} \\
+    \texttt{\Large \codigoNotaTecnica}
+    \end{center}
+    
+    \textbf{Estructura del código:}
+    \begin{itemize}
+        \item \textbf{Fecha de utilización:} Formato dd/mm/aaaa
+        \item \textbf{Tipo de entidad:} 1435 (EKG - Aseguradora de Vida)
+        \item \textbf{Tipo de documento:} NT-P (Nota Técnica de Producto)
+        \item \textbf{Ramo:} Según clasificación Superfinanciera
+        \item \textbf{Identificación interna:} Código alfanumérico único
+    \end{itemize}
+}
+
+% -----------------------------------------------------------------------------
+% ENTORNO PARA BASES TÉCNICAS
+% -----------------------------------------------------------------------------
+\newenvironment{basestecnicas}
+{
+    \section{Bases Técnicas}
+    \color{EKGGrisOscuro}
+}
+{
+    \color{black}
+}
+
+% -----------------------------------------------------------------------------
+% COMANDO PARA CREAR ANEXOS
+% -----------------------------------------------------------------------------
+\newcommand{\crearAnexo}[2]{
+    \section{#1}
+    \label{anexo:#1}
+    #2
+}
+
+% -----------------------------------------------------------------------------
+% CONFIGURACIÓN PARA BLOQUES DE CÓDIGO PYTHON
+% -----------------------------------------------------------------------------
+
+% Definir fuente Mononoki Nerd Font para código
+% XeLaTeX busca la fuente automáticamente en las ubicaciones estándar del sistema
+\newfontfamily\mononokifont{Mononoki Nerd Font}[
+    BoldFont=Mononoki Nerd Font Bold,
+    ItalicFont=Mononoki Nerd Font Italic,
+    BoldItalicFont=Mononoki Nerd Font Bold Italic,
+    Scale=0.9
+]
+
+% Paleta de colores Gitpod Light Theme
+\definecolor{GitpodBackground}{RGB}{255, 255, 255}    % Fondo blanco
+\definecolor{GitpodForeground}{RGB}{0, 0, 0}          % Texto principal negro
+\definecolor{GitpodComment}{RGB}{106, 115, 125}       % Comentarios grises
+\definecolor{GitpodKeyword}{RGB}{0, 92, 197}          % Keywords azul
+\definecolor{GitpodString}{RGB}{10, 136, 69}          % Strings verde
+\definecolor{GitpodNumber}{RGB}{9, 134, 88}           % Números verde azulado
+\definecolor{GitpodFunction}{RGB}{121, 93, 163}       % Funciones púrpura
+\definecolor{GitpodConstant}{RGB}{0, 92, 197}         % Constantes azul
+\definecolor{GitpodModule}{RGB}{4, 81, 165}           % Módulos azul oscuro
+\definecolor{GitpodFrame}{RGB}{200, 200, 200}         % Marco gris claro
+
+\lstdefinestyle{pythonStyle}{
+    language=Python,
+    basicstyle=\small\mononokifont\color{GitpodForeground},
+    keywordstyle=\color{GitpodKeyword}\bfseries,
+    commentstyle=\color{GitpodComment}\itshape,
+    stringstyle=\color{GitpodString},
+    numberstyle=\tiny\color{GitpodComment},
+    identifierstyle=\color{GitpodForeground},
+    emph={self,True,False,None},
+    emphstyle=\color{GitpodConstant}\bfseries,
+    emph={[2]pd,np,DataFrame},
+    emphstyle={[2]\color{GitpodModule}\bfseries},
+    emph={[3]def,class},
+    emphstyle={[3]\color{GitpodKeyword}\bfseries},
+    numbers=left,
+    numbersep=10pt,
+    stepnumber=1,
+    backgroundcolor=\color{GitpodBackground},
+    frame=single,
+    framesep=8pt,
+    frameround=tttt,
+    rulecolor=\color{GitpodFrame},
+    breaklines=true,
+    breakatwhitespace=true,
+    showstringspaces=false,
+    tabsize=4,
+    captionpos=b,
+    xleftmargin=20pt,
+    xrightmargin=10pt,
+    aboveskip=15pt,
+    belowskip=15pt,
+    columns=flexible,
+    keepspaces=true,
+}
+
+% Estilo para output de consola/terminal
+\definecolor{OutputBackground}{RGB}{240, 244, 248}    % Fondo gris azulado claro
+\definecolor{OutputText}{RGB}{36, 41, 46}             % Texto gris oscuro
+\definecolor{OutputFrame}{RGB}{149, 157, 165}         % Marco gris medio
+
+\lstdefinestyle{outputStyle}{
+    language={},
+    basicstyle=\small\mononokifont\color{OutputText},
+    numbers=none,
+    backgroundcolor=\color{OutputBackground},
+    frame=single,
+    framesep=8pt,
+    frameround=tttt,
+    rulecolor=\color{OutputFrame},
+    breaklines=true,
+    breakatwhitespace=false,
+    showstringspaces=false,
+    tabsize=4,
+    captionpos=b,
+    xleftmargin=20pt,
+    xrightmargin=10pt,
+    aboveskip=15pt,
+    belowskip=15pt,
+    columns=flexible,
+    keepspaces=true,
+}
+
+% Comando para insertar código Python
+\newcommand{\codigoPython}[2][]{
+    \lstinputlisting[style=pythonStyle, caption={#1}]{#2}
+}
+
+% Comando para código Python inline
+\lstnewenvironment{pythoncode}[1][]
+{
+    \lstset{style=pythonStyle, #1}
+}
+{}

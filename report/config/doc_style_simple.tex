@@ -1,0 +1,372 @@
+% =============================================================================
+% ESTILOS CORPORATIVOS EKG - IDENTIDAD VISUAL PARA NOTA TÉCNICA (SIMPLIFICADO)
+% =============================================================================
+
+% -----------------------------------------------------------------------------
+% CONFIGURACIÓN DE COLORES CORPORATIVOS EKG
+% -----------------------------------------------------------------------------
+% Según Manual de Marca EKG 2024 - Paletas de Color (pág. 10-11)
+
+% Color Palette 01 - Primaria #5B677B
+\definecolor{EKGAzulPrincipal}{HTML}{5B677B}
+% Color Palette 02 - Primaria #979797
+\definecolor{EKGGris}{HTML}{979797}
+% Color Palette 03 - Secundaria #769BC5 (máximo 20% de proporción)
+\definecolor{EKGAzulSecundario}{HTML}{769BC5}
+
+% Colores adicionales para elementos del documento
+\definecolor{EKGAzulClaro}{HTML}{E8EDEF}
+\definecolor{EKGGrisOscuro}{HTML}{4A4A4A}
+% Texto normal en negro puro para máxima legibilidad
+\definecolor{TextoNormal}{HTML}{000000}
+
+% -----------------------------------------------------------------------------
+% CONFIGURACIÓN DE TIPOGRAFÍA CORPORATIVA OFICIAL EKG
+% -----------------------------------------------------------------------------
+% Según Manual de Marca EKG 2024 - Tipografías Primarias /Uso corporativo (pág. 13)
+
+% Fuente principal para texto normal - Microsoft Sans Serif OFICIAL
+% Uso: Párrafo texto libre. Color principal gris, secundario azul
+% XeLaTeX busca la fuente automáticamente en las ubicaciones estándar del sistema
+\setmainfont{Microsoft Sans Serif}[
+    BoldFont=Microsoft Sans Serif,
+    BoldFeatures={FakeBold=2.2}
+]
+\setsansfont{Microsoft Sans Serif}[
+    BoldFont=Microsoft Sans Serif,
+    BoldFeatures={FakeBold=2.2}
+]
+\setmonofont{DejaVu Sans Mono}[Scale=0.95]
+
+% Definir fuentes para jerarquía de títulos según Manual EKG
+
+% FUENTES CORPORATIVAS OFICIALES según Manual EKG (pág. 13):
+% - Aharoni: Uso: Títulos de secciones o capítulos (Color principal azul, secundario gris)
+% - Century Gothic: Uso: Títulos y subtítulos principalmente (Color principal azul, secundario gris)
+
+% Fuente para títulos de secciones o capítulos - Aharoni OFICIAL
+% Uso: Títulos de secciones o capítulos. Color principal azul, secundario gris
+% XeLaTeX busca la fuente automáticamente en las ubicaciones estándar del sistema
+\newfontfamily\titlefont{Aharoni}[
+    BoldFont=Aharoni,
+    Scale=1.0,
+    Ligatures=TeX
+]
+
+% Fuente para títulos y subtítulos - Century Gothic OFICIAL
+% Uso: Títulos y subtítulos principalmente. Color principal azul, secundario gris
+% XeLaTeX busca la fuente automáticamente en las ubicaciones estándar del sistema
+\newfontfamily\subtitlefont{Century Gothic}[
+    BoldFont=Century Gothic Bold,
+    ItalicFont=Century Gothic Italic,
+    BoldItalicFont=Century Gothic Bold Italic,
+    Ligatures=TeX
+]
+
+% Configuración completa: todas las fuentes corporativas están disponibles
+% Microsoft Sans Serif para texto normal, Aharoni para títulos principales,
+% Century Gothic para subtítulos según Manual de Marca EKG 2024
+
+% -----------------------------------------------------------------------------
+% CONFIGURACIÓN DE PÁGINA Y GEOMETRÍA
+% -----------------------------------------------------------------------------
+\geometry{
+    left=2cm,
+    right=2cm,
+    top=3.5cm,
+    bottom=2cm,
+    headheight=66pt,
+    headsep=0.8cm,
+    footskip=1cm
+}
+
+% -----------------------------------------------------------------------------
+% LOGO VIGILADO SFC EN ESQUINA SUPERIOR IZQUIERDA (TODAS LAS PÁGINAS)
+% -----------------------------------------------------------------------------
+% Colocar logo "Vigilado SFC" en la esquina superior izquierda absoluta
+% de todas las páginas (incluida portada) con opacidad reducida
+\AddToShipoutPictureBG{%
+    \begin{tikzpicture}[remember picture,overlay]
+        \node[opacity=0.3, inner sep=0pt] at (current page.north west) [anchor=north west] {%
+            \includegraphics[width=1.2cm]{images/vigilado_sfc.png}%
+        };
+    \end{tikzpicture}%
+}
+
+% -----------------------------------------------------------------------------
+% CONFIGURACIÓN DE ENCABEZADOS Y PIES DE PÁGINA
+% -----------------------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+
+% Redefinir marcas de sección para NO usar mayúsculas automáticamente
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+
+% Encabezado con textos alineados a la izquierda y logo a la derecha
+\fancyhead[L]{
+    \begin{tabular}[b]{@{}l@{}}
+    \textcolor{EKGAzulPrincipal}{\small\titlefont\textbf{Nota Técnica}} \\
+    \textcolor{EKGAzulPrincipal}{\scriptsize\subtitlefont\nombreProducto} \\
+    \textcolor{EKGGris}{\scriptsize\subtitlefont\leftmark}
+    \end{tabular}
+}
+\fancyhead[R]{
+    \includegraphics[height=1.5cm]{images/logo.png}
+}
+
+% Pie de página
+\fancyfoot[L]{
+    \begin{tabular}[t]{@{}l@{}}
+    \tiny\textcolor{EKGGris}{Nota técnica: \codigoNotaTecnica} \\
+    \tiny\textcolor{EKGGris}{Condicionado: \codigoCondicionado}
+    \end{tabular}
+}
+\fancyfoot[C]{}
+\fancyfoot[R]{\footnotesize\textcolor{EKGGris}{\thepage}}
+
+% Líneas de encabezado y pie
+\renewcommand{\headrulewidth}{2pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{EKGAzulPrincipal}\leaders\hrule height \headrulewidth\hfill}}
+\renewcommand{\footrulewidth}{0.5pt}
+\renewcommand{\footrule}{\hbox to\headwidth{\color{EKGGris}\leaders\hrule height \footrulewidth\hfill}}
+
+% -----------------------------------------------------------------------------
+% CONFIGURACIÓN DE TÍTULOS Y SECCIONES
+% -----------------------------------------------------------------------------
+% Implementación de jerarquía tipográfica según Manual EKG
+
+% Formato de secciones (títulos de secciones/capítulos - Aharoni)
+% Color principal azul según Manual EKG
+% NOTA: Por defecto centrado para índices. Usar \aplicarFormatoSeccionesContenido para alinear a la derecha
+% Tamaño: \Large (17.28pt) para texto, \Huge (24.88pt) para número
+\titleformat{\section}
+    {\titlefont\Large\bfseries\color{EKGAzulPrincipal}}
+    {\titlefont\Huge\bfseries\thesection}{1em}{}
+
+% Formato de subsecciones (títulos y subtítulos - Century Gothic)
+% Color principal azul, secundario gris según Manual EKG
+% Tamaño: \large (14.4pt) para segundo nivel de jerarquía
+\titleformat{\subsection}
+    {\subtitlefont\large\bfseries\color{EKGAzulPrincipal}}
+    {\thesubsection}{1em}{}
+
+% Formato de subsubsecciones (Century Gothic)
+% Color secundario gris para jerarquía visual
+% Tamaño: \large (14.4pt) para tercer nivel de jerarquía - más grande que texto normal
+\titleformat{\subsubsection}
+    {\subtitlefont\large\bfseries\color{EKGGrisOscuro}}
+    {\thesubsubsection}{1em}{}
+
+% Formato de párrafos numerados (paragraph)
+% Usar para divisiones menores dentro de subsubsecciones
+% Tamaño: \normalsize (12pt, mismo que texto normal) con color más claro
+\titleformat{\paragraph}
+    {\normalfont\normalsize\bfseries\color{EKGGris}}
+    {\theparagraph}{1em}{}
+
+% Formato de subpárrafos (subparagraph)
+% Tamaño: \small (10.95pt) para mínima jerarquía visual
+\titleformat{\subparagraph}
+    {\normalfont\small\bfseries\color{EKGGrisOscuro}}
+    {\thesubparagraph}{1em}{}
+
+% -----------------------------------------------------------------------------
+% COMANDO PARA ACTIVAR FORMATO DE SECCIONES DEL CONTENIDO PRINCIPAL
+% -----------------------------------------------------------------------------
+% Este comando redefine el formato para diferenciar jerárquicamente cada nivel
+% Llamar justo antes de iniciar el contenido principal (después de índices)
+\newcommand{\aplicarFormatoSeccionesContenido}{
+    % Secciones: CENTRADAS con número grande
+    \titleformat{\section}
+        {\titlefont\Large\bfseries\color{EKGAzulPrincipal}\centering}
+        {\titlefont\Huge\bfseries\thesection}{1em}{}
+
+    % Subsecciones: ALINEADAS A LA DERECHA
+    \titleformat{\subsection}
+        {\subtitlefont\large\bfseries\color{EKGAzulPrincipal}\raggedleft}
+        {\thesubsection}{1em}{}
+
+    % Subsubsecciones: ALINEADAS A LA IZQUIERDA - tamaño más grande para diferenciarse
+    \titleformat{\subsubsection}
+        {\subtitlefont\large\bfseries\color{EKGGrisOscuro}}
+        {\thesubsubsection}{1em}{}
+
+    % Párrafos: ALINEADOS A LA IZQUIERDA - tamaño normal, color más claro
+    \titleformat{\paragraph}
+        {\normalfont\normalsize\bfseries\color{EKGGris}}
+        {\theparagraph}{1em}{}
+}
+
+% -----------------------------------------------------------------------------
+% CONFIGURACIÓN DE TABLAS
+% -----------------------------------------------------------------------------
+
+% Estilo para encabezados de tabla
+\newcolumntype{H}{>{\columncolor{EKGAzulPrincipal!20}\bfseries\color{EKGGrisOscuro}}c}
+\newcolumntype{C}{>{\centering\arraybackslash}X}
+
+% -----------------------------------------------------------------------------
+% CONFIGURACIÓN DE LISTAS
+% -----------------------------------------------------------------------------
+
+% Configuración de enumeración
+\setlist[enumerate,1]{
+    label=\textbf{\arabic*.},
+    leftmargin=*,
+    itemsep=0.5em,
+    topsep=0.5em
+}
+
+% Configuración de viñetas
+\setlist[itemize,1]{
+    label=\textcolor{EKGAzulPrincipal}{\textbullet},
+    leftmargin=*,
+    itemsep=0.3em,
+    topsep=0.3em
+}
+
+% -----------------------------------------------------------------------------
+% CONFIGURACIÓN DE HIPERVÍNCULOS BÁSICA
+% -----------------------------------------------------------------------------
+\hypersetup{
+    colorlinks=true,
+    linkcolor=EKGAzulPrincipal,
+    filecolor=EKGAzulPrincipal,
+    urlcolor=EKGAzulSecundario,
+    citecolor=EKGGrisOscuro,
+    bookmarksnumbered=true,
+    bookmarksopen=true
+}
+
+% Comando para configurar metadata PDF después de definir las variables
+\newcommand{\configurarMetadataPDF}{
+    \hypersetup{
+        pdftitle={Nota Técnica - \nombreProducto},
+        pdfauthor={\actuarioPrincipal - EKG Compañía de Seguros de Vida S.A.},
+        pdfsubject={Nota Técnica Actuarial - Seguros de Vida Individual},
+        pdfkeywords={seguros, vida individual, nota técnica, actuarial, EKG, Colombia},
+        pdfcreator={XeLaTeX con plantilla EKG},
+        pdfproducer={EKG Compañía de Seguros de Vida S.A.}
+    }
+}
+
+% -----------------------------------------------------------------------------
+% CONFIGURACIÓN DE PGFPLOTS PARA GRÁFICOS
+% -----------------------------------------------------------------------------
+\pgfplotsset{
+    /pgfplots/ekg style/.style={
+        width=0.8\textwidth,
+        height=0.6\textwidth,
+        grid=major,
+        grid style={line width=0.1pt, draw=EKGGris!30},
+        axis lines*=left,
+        xlabel style={color=EKGGrisOscuro, font=\sffamily},
+        ylabel style={color=EKGGrisOscuro, font=\sffamily},
+        title style={color=EKGAzulPrincipal, font=\sffamily\bfseries},
+        legend style={
+            at={(0.02,0.98)},
+            anchor=north west,
+            font=\footnotesize\sffamily,
+            fill=white,
+            fill opacity=0.9,
+            draw=EKGGris
+        },
+        every axis plot/.append style={
+            line width=1.5pt,
+            color=EKGAzulPrincipal
+        }
+    }
+}
+
+% -----------------------------------------------------------------------------
+% ESPACIADO Y CONFIGURACIÓN GENERAL DEL DOCUMENTO
+% -----------------------------------------------------------------------------
+\setstretch{1.15}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.8em}
+
+% Configurar color de texto normal en negro puro
+\AtBeginDocument{\color{TextoNormal}}
+
+% -----------------------------------------------------------------------------
+% CONFIGURACIÓN DEL ÍNDICE
+% -----------------------------------------------------------------------------
+\setcounter{tocdepth}{4} % Mostrar hasta paragraph (nivel 4) - Con jerarquía completa
+\setcounter{secnumdepth}{4} % Numerar hasta paragraph (nivel 4)
+
+% Cambiar títulos de índices a Title Case (sin mayúsculas obligadas)
+\addto\captionsspanish{%
+  \renewcommand{\contentsname}{Índice}%
+  \renewcommand{\listtablename}{Índice de Tablas}%
+  \renewcommand{\listfigurename}{Índice de Figuras}%
+}
+
+% Configuración mínima del TOC: solo fuente más pequeña para párrafos
+\titlecontents{paragraph}
+    [10em]                          % Sangría por defecto
+    {\small}                        % Fuente más pequeña para párrafos
+    {\contentslabel{4em}}           % Espacio para número
+    {}
+    {\titlerule*[0.5pc]{.}\contentspage}
+
+
+% -----------------------------------------------------------------------------
+% CONFIGURACIÓN DE NUMERACIÓN ROMANA PARA SECCIONES PRELIMINARES
+% -----------------------------------------------------------------------------
+% Redefinir formato de numeración de secciones para usar romanos
+\newcommand{\usarNumeracionRomana}{
+    \renewcommand{\thesection}{\Roman{section}}
+    \renewcommand{\thesubsection}{\Roman{section}.\roman{subsection}}
+}
+
+% Redefinir formato de numeración de secciones para usar arábigos
+\newcommand{\usarNumeracionArabiga}{
+    \renewcommand{\thesection}{\arabic{section}}
+    \renewcommand{\thesubsection}{\arabic{section}.\arabic{subsection}}
+    \renewcommand{\thesubsubsection}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}}
+    \renewcommand{\theparagraph}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}}
+    \renewcommand{\thesubparagraph}{\arabic{section}.\arabic{subsection}.\arabic{subsubsection}.\arabic{paragraph}.\arabic{subparagraph}}
+}
+
+% -----------------------------------------------------------------------------
+% CONFIGURACIÓN DE APÉNDICES
+% -----------------------------------------------------------------------------
+\renewcommand{\appendixname}{Anexo}
+\renewcommand{\appendixtocname}{Anexos}
+\renewcommand{\appendixpagename}{Anexos}
+
+% -----------------------------------------------------------------------------
+% ESTILOS PERSONALIZADOS PARA DIFERENTES SECCIONES
+% -----------------------------------------------------------------------------
+
+% Estilo para contenido principal (con numeración página/total)
+\fancypagestyle{contenidoprincipal}{
+    \fancyhf{}
+    \fancyhead[L]{
+        \begin{tabular}[b]{@{}l@{}}
+        \textcolor{EKGAzulPrincipal}{\small\titlefont\textbf{Nota Técnica}} \\
+        \textcolor{EKGAzulPrincipal}{\scriptsize\subtitlefont\nombreProducto} \\
+        \textcolor{EKGGris}{\scriptsize\subtitlefont\leftmark}
+        \end{tabular}
+    }
+    \fancyhead[R]{\includegraphics[height=1.5cm]{images/logo.png}}
+    \fancyfoot[L]{
+        \begin{tabular}[t]{@{}l@{}}
+        \tiny\textcolor{EKGGris}{Nota técnica: \codigoNotaTecnica} \\
+        \tiny\textcolor{EKGGris}{Condicionado: \codigoCondicionado}
+        \end{tabular}
+    }
+    \fancyfoot[C]{}
+    \fancyfoot[R]{\footnotesize\textcolor{EKGGris}{\thepage/\pageref{LastPage}}}
+    \renewcommand{\headrulewidth}{2pt}
+    \renewcommand{\headrule}{\hbox to\headwidth{\color{EKGAzulPrincipal}\leaders\hrule height \headrulewidth\hfill}}
+    \renewcommand{\footrulewidth}{0.5pt}
+    \renewcommand{\footrule}{\hbox to\headwidth{\color{EKGGris}\leaders\hrule height \footrulewidth\hfill}}
+}
+
+% Estilo para portada (sin códigos en pie)
+\fancypagestyle{portada}{
+    \fancyhf{}
+    \renewcommand{\headrulewidth}{0pt}
+    \renewcommand{\footrulewidth}{0pt}
+}

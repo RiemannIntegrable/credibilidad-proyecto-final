@@ -1,0 +1,127 @@
+# =============================================================================
+# GITIGNORE - Proyecto Final Credibilidad
+# =============================================================================
+# Estrategia: Ignorar todo por defecto, permitir solo archivos espec�ficos
+# =============================================================================
+
+# Ignorar todo por defecto
+*
+
+# =============================================================================
+# ARCHIVOS PERMITIDOS GLOBALMENTE
+# =============================================================================
+
+# El propio .gitignore
+!.gitignore
+
+# Archivos de documentaci�n
+!*.md
+
+# Archivos de c�digo Python
+!*.py
+
+# Notebooks de Jupyter
+!*.ipynb
+
+# Archivos LaTeX
+!*.tex
+!*.bib
+
+# Documentos Word
+!*.docx
+
+# Archivo de configuraci�n del ambiente
+!environment.yml
+
+# Licencia y README
+!LICENSE
+!README.md
+
+# Mantener estructura de carpetas
+!.gitkeep
+
+# =============================================================================
+# DATOS DE ENTRADA
+# =============================================================================
+
+# Mantener estructura de carpetas de datos
+!data/
+!data/in/
+!data/out/
+
+# Ignorar archivos de datos (demasiado grandes para GitHub)
+data/in/*.txt
+data/out/*
+
+# =============================================================================
+# IM�GENES EN REPORT
+# =============================================================================
+
+# Permitir todas las carpetas necesarias para llegar a report/images/
+!report/
+!report/*/
+!report/*/*/
+
+# Permitir im�genes solo dentro de report/ y subcarpetas
+!report/**/*.jpg
+!report/**/*.jpeg
+!report/**/*.png
+
+# =============================================================================
+# ESTRUCTURA DE DIRECTORIOS
+# =============================================================================
+
+# Permitir todos los directorios para que .gitkeep funcione
+!*/
+
+# =============================================================================
+# ARCHIVOS COMPILADOS DE LATEX (IGNORADOS)
+# =============================================================================
+
+# Archivos auxiliares de LaTeX
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.bbl
+*.blg
+*.synctex.gz
+*.fdb_latexmk
+*.fls
+*.xdv
+
+# PDFs compilados
+*.pdf
+
+# =============================================================================
+# OTROS ARCHIVOS A IGNORAR
+# =============================================================================
+
+# Carpeta de configuraci�n de Claude
+.claude/
+
+# Archivos temporales del sistema
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
+
+# Cach�s de Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Entornos virtuales
+venv/
+env/
+ENV/
+.venv/
+
+# Archivos de datos temporales
+data/tmp/
+data/out/

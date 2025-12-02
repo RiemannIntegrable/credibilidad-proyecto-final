@@ -1,0 +1,109 @@
+% =============================================================================
+% PAQUETES PARA NOTA T�CNICA EKG - SEGUROS DE VIDA INDIVIDUAL
+% =============================================================================
+
+% Configuración b�sica del documento
+\usepackage[utf8]{inputenc}
+\usepackage{fontspec}
+% Para XeLaTeX con soporte de español
+\usepackage[spanish]{babel}
+
+% Geometría y layout
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{multicol}
+\usepackage{setspace}
+
+% Manejo de colores e im�genes
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{eso-pic}  % Para colocar imágenes en posiciones absolutas
+\usepackage{float}
+\usepackage{wrapfig}
+
+% Tablas avanzadas
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{colortbl}
+
+% Matem�ticas y notaci�n actuarial
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{arev}  % Matemáticas sans serif tipo Vera Sans, muy legible
+
+% Algoritmos (para pseudocódigo en credibilidad)
+\usepackage{algorithm}
+\usepackage{algorithmic}
+
+% Renombrar "Algorithm" a "Algoritmo" en español
+\floatname{algorithm}{Algoritmo}
+
+% Traducir palabras clave de algorithmic al español
+\renewcommand{\algorithmicrequire}{\textbf{Entrada:}}
+\renewcommand{\algorithmicensure}{\textbf{Salida:}}
+\renewcommand{\algorithmicend}{\textbf{fin}}
+\renewcommand{\algorithmicif}{\textbf{si}}
+\renewcommand{\algorithmicthen}{\textbf{entonces}}
+\renewcommand{\algorithmicelse}{\textbf{si no}}
+\renewcommand{\algorithmicelsif}{\textbf{si no, si}}
+\renewcommand{\algorithmicendif}{\textbf{fin si}}
+\renewcommand{\algorithmicfor}{\textbf{para}}
+\renewcommand{\algorithmicforall}{\textbf{para todo}}
+\renewcommand{\algorithmicdo}{\textbf{hacer}}
+\renewcommand{\algorithmicendfor}{\textbf{fin para}}
+\renewcommand{\algorithmicwhile}{\textbf{mientras}}
+\renewcommand{\algorithmicendwhile}{\textbf{fin mientras}}
+\renewcommand{\algorithmicloop}{\textbf{repetir}}
+\renewcommand{\algorithmicendloop}{\textbf{fin repetir}}
+\renewcommand{\algorithmicrepeat}{\textbf{repetir}}
+\renewcommand{\algorithmicuntil}{\textbf{hasta}}
+\renewcommand{\algorithmicprint}{\textbf{imprimir}}
+\renewcommand{\algorithmicreturn}{\textbf{devolver}}
+\renewcommand{\algorithmictrue}{\textbf{verdadero}}
+\renewcommand{\algorithmicfalse}{\textbf{falso}}
+\renewcommand{\algorithmiccomment}[1]{\hfill $\triangleright$ #1}
+
+% Gr�ficos y diagramas
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.17}
+\usetikzlibrary{arrows.meta, positioning, shapes, calc}
+
+% Listas y enumeraciones
+\usepackage{enumitem}
+
+% Enlaces y referencias
+\usepackage{hyperref}
+\usepackage{url}
+
+% Gesti�n de t�tulos y secciones
+\usepackage{titlesec}
+\usepackage{titletoc}
+
+% Ap�ndices
+\usepackage[toc,page]{appendix}
+
+% Bibliograf�a
+% Bibliografía - natbib (compatible con XeLaTeX y BibTeX)
+\usepackage[numbers,sort&compress]{natbib}
+% Opciones:
+% - numbers: estilo numérico [1], [2], etc.
+% - authoryear: estilo (Autor, año) - cambia a este si lo prefieres
+% - sort&compress: ordena y comprime referencias múltiples [1-3] en lugar de [1,2,3]
+
+% Otros paquetes �tiles
+\usepackage{lipsum}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{siunitx}
+
+% Cajas y alertas
+\usepackage{tcolorbox}
+
+% Código fuente
+\usepackage{listings}
