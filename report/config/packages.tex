@@ -3,10 +3,11 @@
 % =============================================================================
 
 % Configuración b�sica del documento
-\usepackage[utf8]{inputenc}
+% inputenc no es necesario con XeLaTeX (utf8 nativo)
 \usepackage{fontspec}
 % Para XeLaTeX con soporte de español
-\usepackage[spanish]{babel}
+% es-lcroman: usa números romanos minúsculas SIN small caps (evita conflicto con lastpage)
+\usepackage[spanish,es-lcroman]{babel}
 
 % Geometría y layout
 \usepackage{geometry}

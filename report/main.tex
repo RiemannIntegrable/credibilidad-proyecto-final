@@ -23,27 +23,35 @@
 % Los códigos completos se generan automáticamente a partir de estos componentes
 
 % Fechas
-\setFechaCodigo{30/10/2025}                              % Formato dd/mm/yyyy (10 caracteres)
-\setFechaElaboracion{30 de Octubre de 2025}               % Formato legible para portada
+\setFechaCodigo{13/12/2025}                              % Formato dd/mm/yyyy (10 caracteres)
+\setFechaElaboracion{13 de diciembre de 2025}               % Formato legible para portada
 
 % Componentes de códigos de identificación
-\setCodigoEmpresa{1435}                                  % EKG (4 caracteres)
+\setCodigoEmpresa{0001}                                  % ACTUAPITWO (4 caracteres)
 \setTipoDocumento{NT}                                    % NT=Nota Técnica, AN=Anexo (2 caracteres)
-\setRamo{P-34}                                           % Formato: letra-número
-\setCodigoInterno{SEGESCFAMILAR001}                      % Código interno del producto (16 caracteres)
+\setRamo{16}                                             % Ramo 16: Cumplimiento (según SFC)
+\setCodigoInterno{CUMP-ACTUAPITWO2}                      % Código interno del producto (16 caracteres)
 \setCanalComercializacion{D00I}                          % Canal de comercialización (4 caracteres)
 
 % Nombre del producto
-\setNombreProducto{Poliza de Seguro Escolar Familiar}
+\setNombreProducto{Cumplimiento}
 
 % Los códigos completos se generan automáticamente:
-% Código Nota Técnica:  \codigoNotaTecnica  → 03/10/2025-1435-NT-P-31-APINDMOVISTAR001
-% Código Condicionado:  \codigoCondicionado → 03/10/2025-1435-P-31-APINDMOVISTAR001-D00I
+% Código Nota Técnica:  \codigoNotaTecnica  → 13/12/2025-0001-NT-16-CUMP-ACTUAPITWO2
+% Código Condicionado:  \codigoCondicionado → 13/12/2025-0001-16-CUMP-ACTUAPITWO2-D00I
 
-% Información del actuario principal
-\setActuarioPrincipal{Jose Miguel Acuña Hernandez}
+% Información de los actuarios
+\setActuarioPrincipal{José Miguel Acuña Hernández}
 \setMatriculaActuario{C.C. 1.000.143.264}
-\setCredencialesActuario{Actuario EKG}
+\setCredencialesActuario{Actuario ACTUAPITWO2}
+
+\newcommand{\actuarioSecundario}{Guillermo Eduardo Murillo Tirado}
+\newcommand{\matriculaActuarioSecundario}{C.C. 1.010.027.975}
+\newcommand{\credencialesActuarioSecundario}{Actuario ACTUAPITWO2}
+
+\newcommand{\actuarioTerciario}{Andrés Steven Puertas Londoño}
+\newcommand{\matriculaActuarioTerciario}{C.C. 1.053.873.236}
+\newcommand{\credencialesActuarioTerciario}{Actuario ACTUAPITWO2}
 
 % =============================================================================
 % CONFIGURACIÓN DEL DOCUMENTO
@@ -119,9 +127,6 @@
 % -----------------------------------------------------------------------------
 \pagenumbering{roman}
 \setcounter{page}{1}
-
-% Asegurar que el índice use numeración romana minúscula
-\addtocontents{toc}{\protect\renewcommand{\protect\thepage}{\roman{page}}}
 
 % Anexos técnicos (sin numeración de sección)
 \input{content/07_anexos}
