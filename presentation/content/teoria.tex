@@ -1,0 +1,639 @@
+\section{Teoría: Estimación Bayesiana con Prior Continua}
+
+% ==================== SUBSECCIÓN 1: FUNDAMENTOS ====================
+\subsection{Fundamentos de Inferencia Bayesiana}
+
+\begin{frame}{Marco Teórico: Espacio de Probabilidad}
+    \begin{definition}[Espacio de Probabilidad]
+        Sea $(\Omega, \Fcal, \P)$ un espacio de probabilidad, donde:
+        \begin{itemize}
+            \item $\Omega$: espacio muestral (conjunto de resultados posibles)
+            \item $\Fcal$: $\sigma$-álgebra de eventos en $\Omega$
+            \item $\P: \Fcal \to [0,1]$: medida de probabilidad
+        \end{itemize}
+    \end{definition}
+
+    \pause
+
+    \begin{definition}[Variable Aleatoria]
+        Una \textbf{variable aleatoria} es una función medible $X: \Omega \to \R$ tal que:
+        \begin{equation}
+            X^{-1}(B) = \{\omega \in \Omega : X(\omega) \in B\} \in \Fcal, \quad \forall B \in \Bcal(\R)
+        \end{equation}
+        donde $\Bcal(\R)$ es la $\sigma$-álgebra de Borel en $\R$.
+    \end{definition}
+\end{frame}
+
+\begin{frame}{Teorema de Radon-Nikodym}
+    \begin{theorem}[Radon-Nikodym]
+        Sea $(S, \mathcal{S})$ un espacio medible. Sean $\mu$ y $\nu$ medidas $\sigma$-finitas sobre $(S, \mathcal{S})$ tales que $\nu \ll \mu$ ($\nu$ es absolutamente continua respecto a $\mu$).
+
+        Entonces existe una función medible $f: S \to [0,\infty)$ tal que para todo $A \in \mathcal{S}$:
+        \begin{equation}
+            \nu(A) = \int_A f \, d\mu
+        \end{equation}
+
+        La función $f$ se llama la \textbf{derivada de Radon-Nikodym} de $\nu$ respecto a $\mu$, denotada $\frac{d\nu}{d\mu}$, y es única $\mu$-c.t.p.
+    \end{theorem}
+\end{frame}
+
+\begin{frame}{Corolario: Densidades como Derivadas de Radon-Nikodym}
+    \begin{corollary}[Existencia de Densidades]
+        Sea $(\Omega, \mathcal{F}, \mathbb{P})$ un espacio de probabilidad. Sea $X: \Omega \to \mathbb{R}^n$ una variable aleatoria con distribución $F_X$ absolutamente continua respecto a la medida de Lebesgue $\lambda$ en $\mathbb{R}^n$.
+
+        Entonces existe una única función medible $f_X: \mathbb{R}^n \to [0,\infty)$ tal que:
+        \begin{equation}
+            \F_X(A) = \mathbb{P}(X \in A) = \int_A f_X(x) \, d\lambda \quad \forall A \in \mathcal{B}(\mathbb{R}^n)
+        \end{equation}
+
+        La función $f_X = \frac{d\mathbb{P}_X}{d\lambda}$ se llama la \textbf{función de densidad de probabilidad} de $X$.
+    \end{corollary}
+\end{frame}
+
+\begin{frame}{Variables Aleatorias en el Contexto Bayesiano}
+    \begin{block}{Configuración del Problema}
+        En inferencia bayesiana trabajamos con:
+        \begin{itemize}
+            \item $X: \Omega \to \R$: variable aleatoria observable (datos, siniestros, etc.)
+            \item $\Theta: \Omega \to \Theta_0 \subseteq \R$: \textbf{parámetro aleatorio} desconocido
+        \end{itemize}
+
+        \textbf{Observación clave}: En el enfoque bayesiano, $\Theta$ es una variable aleatoria, no una constante desconocida.
+    \end{block}
+
+    \pause
+
+    \begin{block}{Notación de Densidades}
+        Cuando $Y: \Omega \to \R$ es absolutamente continua respecto a Lebesgue, escribimos $f_Y: \R \to [0,\infty)$ para su densidad:
+        \begin{equation}
+            \P(Y \in B) = \int_B f_Y(y) \, dy, \quad \forall B \in \Bcal(\R)
+        \end{equation}
+        donde $f_Y = \frac{d\mathbb{P}_Y}{d\lambda}$ (derivada de Radon-Nikodym del Corolario anterior).
+    \end{block}
+\end{frame}
+
+\begin{frame}{Distribución Prior del Parámetro}
+    \begin{definition}[Distribución Prior]
+        La \textbf{distribución prior} (o \emph{a priori}) de $\Theta$ es la distribución marginal de $\Theta$ antes de observar datos.
+
+        Su función de densidad se denota:
+        \begin{equation}
+            \pi_{\Theta}(\theta): \Theta_0 \to [0,\infty)
+        \end{equation}
+
+        con $\int_{\Theta_0} \pi_{\Theta}(\theta) d\theta = 1$ (o $= \infty$ si es impropia).
+    \end{definition}
+
+    \pause
+
+    \begin{block}{Prior Impropia}
+        Una \textbf{prior impropia} satisface $\int_{\Theta_0} \pi_{\Theta}(\theta) d\theta = \infty$.
+
+        Es admisible si la posterior resultante es propia (integra a 1).
+
+        \textbf{Ejemplo}: $\pi_{\Theta}(\theta) = \frac{1}{\theta}$ para $\theta > 0$ (prior de Jeffreys para parámetro de escala).
+    \end{block}
+\end{frame}
+
+\begin{frame}{Distribución Condicional del Modelo}
+    \begin{definition}[Densidad Condicional del Modelo]
+        La \textbf{densidad del modelo} es la densidad condicional de $X$ dado $\Theta = \theta$:
+        \begin{equation}
+            f_{X|\Theta}(x|\theta): \R \times \Theta_0 \to [0,\infty)
+        \end{equation}
+
+        Esta función especifica cómo se distribuyen los datos para cada valor fijo del parámetro.
+
+        Para $\theta$ fijo, $f_{X|\Theta}(\cdot|\theta)$ es una densidad de probabilidad en $x$.
+    \end{definition}
+
+    \pause
+
+    \begin{exampleblock}{Ejemplo Actuarial}
+        Si $X$ representa el número de siniestros y $\Theta = \lambda$ (tasa de siniestralidad):
+        \begin{equation}
+            f_{X|\Theta}(x|\lambda) = \frac{e^{-\lambda}\lambda^x}{x!}, \quad x \in \{0,1,2,\ldots\}
+        \end{equation}
+        (distribución Poisson condicional en $\lambda$)
+    \end{exampleblock}
+\end{frame}
+
+\begin{frame}{Independencia Condicional de Observaciones}
+    \begin{definition}[Muestra Aleatoria Condicional]
+        Sean $X_1, X_2, \ldots, X_n: \Omega \to \R$ variables aleatorias observables.
+
+        Decimos que $(X_1, \ldots, X_n)$ es una \textbf{muestra aleatoria condicional} dado $\Theta$ si:
+        \begin{enumerate}
+            \item Son idénticamente distribuidas dado $\Theta$:
+            \begin{equation}
+                f_{X_i|\Theta}(x|\theta) = f_{X|\Theta}(x|\theta), \quad i=1,\ldots,n
+            \end{equation}
+
+            \item Son condicionalmente independientes dado $\Theta$:
+            \begin{equation}
+                f_{X_1,\ldots,X_n|\Theta}(x_1,\ldots,x_n|\theta) = \prod_{i=1}^{n} f_{X_i|\Theta}(x_i|\theta)
+            \end{equation}
+        \end{enumerate}
+    \end{definition}
+\end{frame}
+
+\begin{frame}{Función de Verosimilitud}
+    \begin{definition}[Función de Verosimilitud]
+        Dada una realización $\vec{x} = (x_1, \ldots, x_n)$ de la muestra, la \textbf{función de verosimilitud} es:
+        \begin{equation}
+            L(\theta; \vec{x}) = f_{X_1,\ldots,X_n|\Theta}(x_1,\ldots,x_n|\theta) = \prod_{i=1}^{n} f_{X_i|\Theta}(x_i|\theta)
+        \end{equation}
+
+        Vista como función de $\theta$ (con $\vec{x}$ fijo), cuantifica la plausibilidad de $\theta$ dada la evidencia observada.
+    \end{definition}
+
+    \pause
+
+    \begin{block}{Interpretación}
+        \begin{itemize}
+            \item $f_{X_1,\ldots,X_n|\Theta}(x_1,\ldots,x_n|\theta)$: función de $\vec{x}$ (densidad)
+            \item $L(\theta; \vec{x})$: función de $\theta$ (verosimilitud)
+            \item Son la misma expresión algebraica, pero con roles intercambiados
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+% ==================== SUBSECCIÓN 2: DISTRIBUCIONES CONJUNTA Y MARGINAL ====================
+\subsection{Distribuciones Conjunta, Marginal y Posterior}
+
+\begin{frame}{Lema de Factorización de Densidades Conjuntas}
+    \begin{lemma}[Factorización de Densidad Conjunta]
+        Sean $X: \Omega \to \mathbb{R}^n$ y $Y: \Omega \to \mathbb{R}^m$ variables aleatorias con densidades conjunta $f_{X,Y}$, marginal $f_Y$ y condicional $f_{X|Y}$ (todas respecto a la medida de Lebesgue).
+
+        Entonces:
+        \begin{equation} \label{eq:factorizacion_densidades}
+            f_{X,Y}(x,y) = f_{X|Y}(x|y) \cdot f_Y(y) \quad \lambda^{n+m}\text{-c.t.p.}
+        \end{equation}
+    \end{lemma}
+\end{frame}
+
+\begin{frame}{Demostración del Lema de Factorización}
+    \begin{proof}
+        Para $A \in \mathcal{B}(\mathbb{R}^n)$ y $B \in \mathcal{B}(\mathbb{R}^m)$:
+        \begin{align*}
+            \mathbb{P}(X \in A, Y \in B) &= \int_A \int_B f_{X,Y}(x,y) \, dy \, dx
+        \end{align*}
+
+        Por desintegración de medidas (Radon-Nikodym condicional):
+        \begin{align*}
+            \mathbb{P}(X \in A, Y \in B) &= \int_B \mathbb{P}(X \in A \mid Y = y) \, f_Y(y) \, dy \\
+            &= \int_B \left[\int_A f_{X|Y}(x|y) \, dx\right] f_Y(y) \, dy \\
+            &= \int_A \int_B f_{X|Y}(x|y) f_Y(y) \, dy \, dx \quad \text{(Fubini)}
+        \end{align*}
+
+        Por unicidad de densidades: $f_{X,Y}(x,y) = f_{X|Y}(x|y) \cdot f_Y(y)$ c.t.p.
+    \end{proof}
+\end{frame}
+
+\begin{frame}{Distribución Conjunta de Datos y Parámetro}
+    \begin{theorem}[Densidad Conjunta]
+        La densidad conjunta de $(\vec{X}, \Theta) = (X_1, \ldots, X_n, \Theta)$ está dada por:
+        \begin{equation} \label{eq:densidad_conjunta}
+            f_{\vec{X},\Theta}(\vec{x},\theta) = f_{\vec{X}|\Theta}(\vec{x}|\theta) \times \pi_{\Theta}(\theta)
+        \end{equation}
+    \end{theorem}
+
+    \pause
+
+    \begin{proof}
+        Aplicación directa del Lema de Factorización \eqref{eq:factorizacion_densidades} con $X = \vec{X}$ y $Y = \Theta$.
+    \end{proof}
+\end{frame}
+
+\begin{frame}{Interpretación de la Densidad Conjunta}
+    \begin{block}{Factorización Fundamental}
+        \begin{equation*}
+            f_{\vec{X},\Theta}(\vec{x},\theta) = \underbrace{f_{\vec{X}|\Theta}(\vec{x}|\theta)}_{\text{Modelo condicional}} \times \underbrace{\pi_{\Theta}(\theta)}_{\text{Prior}}
+        \end{equation*}
+    \end{block}
+
+    \pause
+
+    \begin{itemize}
+        \item Equivalentemente: $f_{\vec{X},\Theta}(\vec{x},\theta) = L(\theta; \vec{x}) \times \pi_{\Theta}(\theta)$
+        \item Esta factorización es la base de toda la inferencia bayesiana
+        \item Combina el \textbf{modelo de los datos} con la \textbf{información previa}
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Distribución Marginal de los Datos}
+    \begin{definition}[Densidad Marginal]
+        La \textbf{densidad marginal} (o incondicional) de $\vec{X} = (X_1, \ldots, X_n)$ se obtiene integrando la densidad conjunta sobre $\Theta$:
+        \begin{equation} \label{eq:marginal_def}
+            f_{\vec{X}}(\vec{x}) = \int_{\Theta_0} f_{\vec{X},\Theta}(\vec{x},\theta) \, d\theta
+        \end{equation}
+    \end{definition}
+\end{frame}
+
+\begin{frame}{Forma Explícita de la Marginal}
+    \begin{corollary}[Consecuencia del Teorema de Densidad Conjunta]
+        Por el Teorema de Densidad Conjunta \eqref{eq:densidad_conjunta}, la densidad marginal tiene la forma:
+        \begin{equation} \label{eq:marginal_explicita}
+            f_{\vec{X}}(\vec{x}) = \int_{\Theta_0} f_{\vec{X}|\Theta}(\vec{x}|\theta) \, \pi_{\Theta}(\theta) \, d\theta
+        \end{equation}
+    \end{corollary}
+
+    \pause
+
+    \begin{block}{Justificación}
+        Sustituyendo $f_{\vec{X},\Theta}(\vec{x},\theta) = f_{\vec{X}|\Theta}(\vec{x}|\theta) \pi_{\Theta}(\theta)$ en la definición \eqref{eq:marginal_def}.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Interpretación de la Densidad Marginal}
+    \begin{block}{Mezcla Continua}
+        La densidad marginal $f_{\vec{X}}(\vec{x})$ puede interpretarse como una \textbf{mezcla continua} de las densidades condicionales $f_{\vec{X}|\Theta}(\cdot|\theta)$, ponderadas por la densidad prior $\pi_{\Theta}(\theta)$.
+    \end{block}
+
+    \pause
+
+    \begin{itemize}
+        \item Para cada valor $\theta \in \Theta_0$, tenemos un modelo $f_{\vec{X}|\Theta}(\cdot|\theta)$
+        \item La marginal integra sobre todos los posibles valores de $\theta$, ponderando por qué tan plausible es cada $\theta$ según el prior
+        \item Esta integral aparecerá como \textbf{constante normalizadora} en el Teorema de Bayes
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Distribución Posterior del Parámetro}
+    \begin{definition}[Distribución Posterior]
+        La \textbf{distribución posterior} (o \emph{a posteriori}) de $\Theta$ dados los datos $\vec{X} = \vec{x}$ es la distribución condicional:
+        \begin{equation}
+            \pi_{\Theta|\vec{X}}(\theta|\vec{x})
+        \end{equation}
+
+        Esta representa el conocimiento actualizado sobre $\Theta$ después de observar $\vec{x}$.
+    \end{definition}
+
+    \pause
+
+    \begin{alertblock}{Cambio de Perspectiva}
+        \begin{itemize}
+            \item \textbf{Prior}: $\pi_{\Theta}(\theta)$ es función de $\theta$ (con $\vec{x}$ no observado aún)
+            \item \textbf{Posterior}: $\pi_{\Theta|\vec{X}}(\theta|\vec{x})$ es función de $\theta$ (con $\vec{x}$ fijo observado)
+        \end{itemize}
+        Ambas son distribuciones de probabilidad del parámetro aleatorio $\Theta$.
+    \end{alertblock}
+\end{frame}
+
+% ==================== SUBSECCIÓN 3: TEOREMA DE BAYES ====================
+\subsection{Teorema de Bayes para Distribuciones Continuas}
+
+\begin{frame}{Teorema Fundamental de Inferencia Bayesiana}
+    \begin{theorem}[Teorema de Bayes - Caso Continuo]
+        La densidad posterior de $\Theta$ dados $\vec{X} = \vec{x}$ está dada por:
+        \begin{equation} \label{eq:bayes_continuo}
+            \pi_{\Theta|\vec{X}}(\theta|\vec{x}) = \frac{f_{\vec{X}|\Theta}(\vec{x}|\theta) \pi_{\Theta}(\theta)}{f_{\vec{X}}(\vec{x})}
+        \end{equation}
+
+        Equivalentemente:
+        \begin{equation}
+            \pi_{\Theta|\vec{X}}(\theta|\vec{x}) = \frac{L(\theta; \vec{x}) \pi_{\Theta}(\theta)}{\int_{\Theta_0} L(\theta; \vec{x}) \pi_{\Theta}(\theta) d\theta}
+        \end{equation}
+    \end{theorem}
+\end{frame}
+
+\begin{frame}{Demostración del Teorema de Bayes}
+    \begin{proof}
+        Por definición de densidad condicional:
+        \begin{align}
+            \pi_{\Theta|\vec{X}}(\theta|\vec{x}) &= \frac{f_{\vec{X},\Theta}(\vec{x},\theta)}{f_{\vec{X}}(\vec{x})} \\
+            &= \frac{f_{\vec{X}|\Theta}(\vec{x}|\theta) \pi_{\Theta}(\theta)}{f_{\vec{X}}(\vec{x})} \\
+            &= \frac{f_{\vec{X}|\Theta}(\vec{x}|\theta) \pi_{\Theta}(\theta)}{\int_{\Theta_0} f_{\vec{X}|\Theta}(\vec{x}|\theta') \pi_{\Theta}(\theta') d\theta'}
+        \end{align}
+
+        La última igualdad usa la definición de densidad marginal.
+    \end{proof}
+
+    \pause
+
+    \begin{block}{Forma Proporcional}
+        Para cálculos, es común escribir:
+        \begin{equation}
+            \pi_{\Theta|\vec{X}}(\theta|\vec{x}) \propto L(\theta; \vec{x}) \times \pi_{\Theta}(\theta)
+        \end{equation}
+        El denominador es solo una constante normalizadora (no depende de $\theta$).
+    \end{block}
+\end{frame}
+
+\begin{frame}{Componentes del Teorema de Bayes}
+    \begin{equation}
+        \underbrace{\pi_{\Theta|\vec{X}}(\theta|\vec{x})}_{\text{Posterior}} = \frac{\overbrace{L(\theta; \vec{x})}^{\text{Verosimilitud}} \times \overbrace{\pi_{\Theta}(\theta)}^{\text{Prior}}}{\underbrace{\int_{\Theta_0} L(\theta; \vec{x}) \pi_{\Theta}(\theta) d\theta}_{\text{Constante normalizadora (marginal)}}}
+    \end{equation}
+
+    \pause
+
+    \begin{itemize}
+        \item<2-> \textbf{Prior} $\pi_{\Theta}(\theta)$: información inicial sobre $\Theta$
+        \item<3-> \textbf{Verosimilitud} $L(\theta; \vec{x})$: información aportada por los datos
+        \item<4-> \textbf{Posterior} $\pi_{\Theta|\vec{X}}(\theta|\vec{x})$: actualización bayesiana que combina prior y datos
+        \item<5-> \textbf{Constante normalizadora}: garantiza $\int \pi_{\Theta|\vec{X}}(\theta|\vec{x}) d\theta = 1$
+    \end{itemize}
+\end{frame}
+
+% ==================== SUBSECCIÓN 4: DISTRIBUCIÓN PREDICTIVA ====================
+\subsection{Distribución Predictiva}
+
+\begin{frame}{Predicción de Observaciones Futuras}
+    \begin{definition}[Distribución Predictiva]
+        Sea $X_{n+1}: \Omega \to \R$ una nueva observación (futura) del mismo proceso.
+
+        La \textbf{distribución predictiva} de $X_{n+1}$ dados los datos $\vec{X} = \vec{x}$ es la densidad marginal de $X_{n+1}$ en el espacio condicionado en $\vec{X} = \vec{x}$:
+        \begin{equation} \label{eq:predictiva_marginal}
+            f_{X_{n+1}|\vec{X}}(x_{n+1}|\vec{x}) = \int_{\Theta_0} f_{X_{n+1},\Theta|\vec{X}}(x_{n+1},\theta|\vec{x}) \, d\theta
+        \end{equation}
+        donde integramos la densidad conjunta de $(X_{n+1}, \Theta)$ dado $\vec{X} = \vec{x}$ sobre el espacio de parámetros $\Theta_0$.
+    \end{definition}
+\end{frame}
+
+\begin{frame}{Factorización de la Densidad Conjunta Condicional}
+    \begin{lemma}[Regla de la Cadena Condicional]
+        La densidad conjunta de $(X_{n+1}, \Theta)$ dado $\vec{X} = \vec{x}$ se factoriza como:
+        \begin{equation} \label{eq:factorizacion_conjunta}
+            f_{X_{n+1},\Theta|\vec{X}}(x_{n+1},\theta|\vec{x}) = f_{X_{n+1}|\Theta,\vec{X}}(x_{n+1}|\theta,\vec{x}) \cdot \pi_{\Theta|\vec{X}}(\theta|\vec{x})
+        \end{equation}
+    \end{lemma}
+
+    \pause
+
+    \begin{proof}
+        Por definición de densidad condicional:
+        \begin{equation*}
+            f_{X_{n+1},\Theta|\vec{X}}(x_{n+1},\theta|\vec{x}) = \frac{f_{X_{n+1},\Theta,\vec{X}}(x_{n+1},\theta,\vec{x})}{f_{\vec{X}}(\vec{x})}
+        \end{equation*}
+        Aplicando la regla de la cadena al numerador:
+        \begin{equation*}
+            f_{X_{n+1},\Theta,\vec{X}}(x_{n+1},\theta,\vec{x}) = f_{X_{n+1}|\Theta,\vec{X}}(x_{n+1}|\theta,\vec{x}) \cdot f_{\Theta,\vec{X}}(\theta,\vec{x})
+        \end{equation*}
+    \end{proof}
+\end{frame}
+
+\begin{frame}{Demostración del Lema (Continuación)}
+    \begin{proof}[Demostración (Continuación)]
+        Sustituyendo la regla de la cadena en la definición:
+        \begin{align*}
+            f_{X_{n+1},\Theta|\vec{X}}(x_{n+1},\theta|\vec{x}) &= \frac{f_{X_{n+1},\Theta,\vec{X}}(x_{n+1},\theta,\vec{x})}{f_{\vec{X}}(\vec{x})} \\
+            &= \frac{f_{X_{n+1}|\Theta,\vec{X}}(x_{n+1}|\theta,\vec{x}) \cdot f_{\Theta,\vec{X}}(\theta,\vec{x})}{f_{\vec{X}}(\vec{x})}
+        \end{align*}
+
+        \pause
+
+        Factorizando:
+        \begin{equation*}
+            f_{X_{n+1},\Theta|\vec{X}}(x_{n+1},\theta|\vec{x}) = f_{X_{n+1}|\Theta,\vec{X}}(x_{n+1}|\theta,\vec{x}) \cdot \underbrace{\frac{f_{\Theta,\vec{X}}(\theta,\vec{x})}{f_{\vec{X}}(\vec{x})}}_{\pi_{\Theta|\vec{X}}(\theta|\vec{x})}
+        \end{equation*}
+        donde el término subrayado es la densidad posterior por definición.
+    \end{proof}
+\end{frame}
+
+\begin{frame}{Forma Explícita de la Distribución Predictiva}
+    \begin{theorem}[Fórmula de la Predictiva]
+        Bajo el supuesto de independencia condicional $X_{n+1} \perp \vec{X} \mid \Theta$, la distribución predictiva tiene la forma:
+        \begin{equation} \label{eq:predictiva}
+            f_{X_{n+1}|\vec{X}}(x_{n+1}|\vec{x}) = \int_{\Theta_0} f_{X_{n+1}|\Theta}(x_{n+1}|\theta) \, \pi_{\Theta|\vec{X}}(\theta|\vec{x}) \, d\theta
+        \end{equation}
+    \end{theorem}
+
+    \pause
+
+    \begin{proof}
+        Por definición \eqref{eq:predictiva_marginal} y el Lema \eqref{eq:factorizacion_conjunta}:
+        \begin{align*}
+            f_{X_{n+1}|\vec{X}}(x_{n+1}|\vec{x}) &= \int_{\Theta_0} f_{X_{n+1},\Theta|\vec{X}}(x_{n+1},\theta|\vec{x}) \, d\theta \\
+            &= \int_{\Theta_0} f_{X_{n+1}|\Theta,\vec{X}}(x_{n+1}|\theta,\vec{x}) \, \pi_{\Theta|\vec{X}}(\theta|\vec{x}) \, d\theta \\
+            &= \int_{\Theta_0} f_{X_{n+1}|\Theta}(x_{n+1}|\theta) \, \pi_{\Theta|\vec{X}}(\theta|\vec{x}) \, d\theta
+        \end{align*}
+        donde la última igualdad usa $f_{X_{n+1}|\Theta,\vec{X}}(x_{n+1}|\theta,\vec{x}) = f_{X_{n+1}|\Theta}(x_{n+1}|\theta)$ por independencia condicional.
+    \end{proof}
+\end{frame}
+
+\begin{frame}{Interpretación de la Distribución Predictiva}
+    \begin{block}{Estructura de la Fórmula}
+        \begin{equation*}
+            f_{X_{n+1}|\vec{X}}(x_{n+1}|\vec{x}) = \int_{\Theta_0} \underbrace{f_{X_{n+1}|\Theta}(x_{n+1}|\theta)}_{\text{Modelo}} \times \underbrace{\pi_{\Theta|\vec{X}}(\theta|\vec{x})}_{\text{Posterior}} \, d\theta
+        \end{equation*}
+    \end{block}
+
+    \pause
+
+    \begin{itemize}
+        \item La predictiva es un \textbf{promedio ponderado} de las densidades del modelo $f_{X_{n+1}|\Theta}(\cdot|\theta)$ sobre todos los posibles valores de $\theta$
+        \item Los \textbf{pesos} son las probabilidades posteriores $\pi_{\Theta|\vec{X}}(\theta|\vec{x})$
+        \item Integra la \textbf{incertidumbre sobre $\Theta$} usando la información de los datos observados (contenida en la posterior)
+        \item Combina: \textbf{modelo probabilístico} (densidad condicional) + \textbf{incertidumbre paramétrica} (posterior)
+    \end{itemize}
+\end{frame}
+
+% ==================== SUBSECCIÓN 5: PREGUNTAS TÍPICAS ====================
+\subsection{Preguntas Típicas en Credibilidad Bayesiana}
+
+\begin{frame}{Teorema de Esperanza Iterada}
+    \begin{theorem}[Ley de Esperanza Iterada para la Predictiva]
+        Bajo las hipótesis anteriores, la esperanza condicional de $X_{n+1}$ dado $\vec{X} = \vec{x}$ puede calcularse como:
+        \begin{equation} \label{eq:esperanza_iterada}
+            \E[X_{n+1} | \vec{X} = \vec{x}] = \int_{\Theta_0} \E[X_{n+1}|\Theta = \theta] \, \pi_{\Theta|\vec{X}}(\theta|\vec{x}) \, d\theta
+        \end{equation}
+
+        Es decir, la esperanza predictiva es el promedio de las esperanzas condicionales, ponderadas por la distribución posterior.
+    \end{theorem}
+\end{frame}
+
+\begin{frame}{Demostración del Teorema de Esperanza Iterada (I)}
+    \begin{proof}
+        Por definición de esperanza condicional:
+        \begin{equation*}
+            \E[X_{n+1} | \vec{X} = \vec{x}] = \int_{\R} x_{n+1} \cdot f_{X_{n+1}|\vec{X}}(x_{n+1}|\vec{x}) \, dx_{n+1}
+        \end{equation*}
+
+        \pause
+
+        Por el Teorema de la Predictiva \eqref{eq:predictiva}:
+        \begin{equation*}
+            f_{X_{n+1}|\vec{X}}(x_{n+1}|\vec{x}) = \int_{\Theta_0} f_{X_{n+1}|\Theta}(x_{n+1}|\theta) \, \pi_{\Theta|\vec{X}}(\theta|\vec{x}) \, d\theta
+        \end{equation*}
+    \end{proof}
+\end{frame}
+
+\begin{frame}{Demostración del Teorema de Esperanza Iterada (II)}
+    \begin{proof}[Demostración (Continuación)]
+        Sustituyendo:
+        \begin{align*}
+            \E[X_{n+1} | \vec{X} = \vec{x}] &= \int_{\R} x_{n+1} \left[\int_{\Theta_0} f_{X_{n+1}|\Theta}(x_{n+1}|\theta) \pi_{\Theta|\vec{X}}(\theta|\vec{x}) d\theta\right] dx_{n+1}
+        \end{align*}
+
+        \pause
+
+        Por el Teorema de Fubini (intercambiando el orden de integración):
+        \begin{align*}
+            &= \int_{\Theta_0} \left[\int_{\R} x_{n+1} f_{X_{n+1}|\Theta}(x_{n+1}|\theta) dx_{n+1}\right] \pi_{\Theta|\vec{X}}(\theta|\vec{x}) d\theta \\
+            &= \int_{\Theta_0} \underbrace{\E[X_{n+1}|\Theta = \theta]}_{\int_{\R} x_{n+1} f_{X_{n+1}|\Theta}(x_{n+1}|\theta) dx_{n+1}} \pi_{\Theta|\vec{X}}(\theta|\vec{x}) d\theta
+        \end{align*}
+    \end{proof}
+\end{frame}
+
+\begin{frame}{Interpretación de la Esperanza Iterada}
+    \begin{block}{Prima Bayesiana como Promedio Ponderado}
+        La fórmula \eqref{eq:esperanza_iterada} dice que la prima bayesiana es:
+        \begin{equation*}
+            \E[X_{n+1} | \vec{X} = \vec{x}] = \int_{\Theta_0} \underbrace{\E[X_{n+1}|\Theta = \theta]}_{\text{Prima para } \theta \text{ fijo}} \times \underbrace{\pi_{\Theta|\vec{X}}(\theta|\vec{x})}_{\text{Peso (posterior)}} d\theta
+        \end{equation*}
+    \end{block}
+
+    \pause
+
+    \begin{itemize}
+        \item Para cada $\theta$, conocemos la prima esperada $\E[X_{n+1}|\Theta = \theta]$
+        \item Como $\Theta$ es incierto, promediamos estas primas usando la distribución posterior $\pi_{\Theta|\vec{X}}(\theta|\vec{x})$
+        \item Esta fórmula es a menudo más eficiente computacionalmente que integrar directamente sobre $x_{n+1}$
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Cuatro Tipos de Preguntas Estándar (I)}
+    \begin{enumerate}
+        \item<1-> \textbf{Valor esperado posterior del parámetro}:
+        \begin{equation}
+            \E[\Theta | \vec{X} = \vec{x}] = \int_{\Theta_0} \theta \cdot \pi_{\Theta|\vec{X}}(\theta|\vec{x}) d\theta
+        \end{equation}
+
+        \textbf{Nota}: Si la posterior es reconocible (e.g., Gamma, Beta), se puede usar directamente la fórmula de la esperanza de esa distribución.
+
+        \vspace{0.5em}
+
+        \item<2-> \textbf{Prima Bayesiana (valor esperado del próximo siniestro)}:
+        \begin{equation}
+            \E[X_{n+1} | \vec{X} = \vec{x}] = \int_{\R} x_{n+1} \cdot f_{X_{n+1}|\vec{X}}(x_{n+1}|\vec{x}) dx_{n+1}
+        \end{equation}
+
+        \textbf{Alternativamente} (por el Teorema de Esperanza Iterada \eqref{eq:esperanza_iterada}):
+        \begin{equation}
+            \E[X_{n+1} | \vec{X} = \vec{x}] = \int_{\Theta_0} \E[X_{n+1}|\Theta = \theta] \pi_{\Theta|\vec{X}}(\theta|\vec{x}) d\theta
+        \end{equation}
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Cuatro Tipos de Preguntas Estándar (II)}
+    \begin{enumerate}
+        \setcounter{enumi}{2}
+        \item<1-> \textbf{Probabilidad posterior sobre el parámetro}:
+        \begin{equation}
+            \P(\Theta \in A | \vec{X} = \vec{x}) = \int_{A} \pi_{\Theta|\vec{X}}(\theta|\vec{x}) d\theta
+        \end{equation}
+
+        \textbf{Ejemplos}: $\P(\Theta > 2 | \vec{x})$, $\P(1 < \Theta \leq 3 | \vec{x})$.
+
+        \vspace{0.5em}
+
+        \item<2-> \textbf{Probabilidad predictiva sobre observación futura}:
+        \begin{equation}
+            \P(X_{n+1} \in B | \vec{X} = \vec{x}) = \int_{B} f_{X_{n+1}|\vec{X}}(x|\vec{x}) dx
+        \end{equation}
+
+        \textbf{Ejemplos}: $\P(X_{n+1} > 5 | \vec{x})$, $\P(X_{n+1} \leq 1.5 | \vec{x})$.
+    \end{enumerate}
+
+    \vspace{0.5em}
+    \pause
+
+    \begin{alertblock}{Resumen}
+        Preguntas (1) y (3): usan \textbf{posterior} $\pi_{\Theta|\vec{X}}(\theta|\vec{x})$ \\
+        Preguntas (2) y (4): usan \textbf{predictiva} $f_{X_{n+1}|\vec{X}}(x_{n+1}|\vec{x})$
+    \end{alertblock}
+\end{frame}
+
+% ==================== SUBSECCIÓN 6: RECONOCIMIENTO ====================
+\subsection{Reconocimiento de Distribuciones Posteriores}
+
+\begin{frame}{Método de Reconocimiento}
+    \begin{block}{Estrategia para Evitar Cálculo del Denominador}
+        En la ecuación (\ref{eq:bayes_continuo}), el denominador:
+        \begin{equation}
+            f_{\vec{X}}(\vec{x}) = \int_{\Theta_0} L(\theta; \vec{x}) \pi_{\Theta}(\theta) d\theta
+        \end{equation}
+        puede ser difícil de calcular.
+
+        \vspace{0.5em}
+
+        \textbf{Alternativa}: Reconocer la forma funcional de la posterior.
+    \end{block}
+
+    \pause
+
+    \begin{enumerate}
+        \item Calcular $L(\theta; \vec{x}) \times \pi_{\Theta}(\theta)$
+        \item Agrupar términos y simplificar (eliminar constantes que no dependen de $\theta$)
+        \item Reconocer la forma: "Se parece a una Gamma/Beta/Normal/..."
+        \item La constante faltante se deduce de que la densidad debe integrar a 1
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Ejemplo 42A: Poisson con Prior Impropia}
+    \begin{example}
+        \textbf{Modelo}:
+        \begin{itemize}
+            \item $X_i | \Theta$: número de siniestros en el año $i$ $\sim$ Poisson($\theta$)
+            \item Prior: $\pi_{\Theta}(\theta) = \frac{1}{\theta^2}$ para $\theta > 1$ (impropia)
+            \item Datos: $x_1 = 2, x_2 = 0, x_3 = 0$ (tres años sin siniestros)
+        \end{itemize}
+
+        \textbf{Objetivo}: Calcular $\E[X_4 | X_1 = 2, X_2 = 0, X_3 = 0]$.
+    \end{example}
+
+    \pause
+
+    \textbf{Solución}
+    \begin{enumerate}
+        \item Verosimilitud: $L(\theta; \vec{x}) = \prod_{i=1}^{3} \frac{e^{-\theta}\theta^{i}}{i!} = e^{-3\theta}\frac{\theta^2}{2}$
+        \item Prior $\times$ Verosimilitud: $\frac{1}{\theta^2} \cdot e^{-3\theta}\theta^2 = e^{-3\theta}$
+        \item Reconocemos: exponencial desplazada con parámetro $\beta = 3$, desplazamiento $= 1$
+        \item Media posterior: $\E[\Theta | \vec{x}] = 1 + \frac{1}{3} = \frac{4}{3}$
+        \item Como Poisson, $\E[X_4 | \Theta] = \Theta$, así que $\E[X_4 | \vec{x}] = \boxed{\frac{4}{3}}$
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Priors Conjugados}
+    \begin{definition}[Prior Conjugado]
+        Se dice que la familia de distribuciones $\mathcal{P}$ es \textbf{conjugada} para el modelo $f_{X|\Theta}(\cdot|\theta)$ si:
+        \begin{equation}
+            \pi_{\Theta} \in \mathcal{P} \quad \Rightarrow \quad \pi_{\Theta|\vec{X}} \in \mathcal{P}
+        \end{equation}
+
+        Es decir, la posterior pertenece a la misma familia que la prior.
+    \end{definition}
+
+    \pause
+
+    \begin{exampleblock}{Ejemplos Clásicos}
+        \begin{itemize}
+            \item \textbf{Poisson}: Si $X|\Theta \sim \text{Poisson}(\theta)$ y $\Theta \sim \text{Gamma}(\alpha, \beta)$, entonces $\Theta|\vec{X} \sim \text{Gamma}(\alpha', \beta')$
+            \item \textbf{Exponencial}: Si $X|\Theta \sim \text{Exp}(\theta)$ y $\Theta \sim \text{Gamma}(\alpha, \beta)$, entonces $\Theta|\vec{X} \sim \text{Gamma}(\alpha', \beta')$
+            \item \textbf{Normal}: Si $X|\Theta \sim \mathcal{N}(\theta, \sigma^2)$ y $\Theta \sim \mathcal{N}(\mu_0, \tau_0^2)$, entonces $\Theta|\vec{X} \sim \mathcal{N}(\mu_1, \tau_1^2)$
+        \end{itemize}
+    \end{exampleblock}
+\end{frame}
+
+% ==================== SUBSECCIÓN 7: INTERVALOS ====================
+\subsection{Intervalos de Credibilidad}
+
+\begin{frame}{Conjuntos de Credibilidad Bayesianos}
+    \begin{definition}[Conjunto de Credibilidad]
+        Sea $\alpha \in (0,1)$. Un \textbf{conjunto de credibilidad bayesiano} de nivel $1-\alpha$ para $\Theta$ es un conjunto $C \subseteq \Theta_0$ tal que:
+        \begin{equation}
+            \P(\Theta \in C | \vec{X} = \vec{x}) = \int_C \pi_{\Theta|\vec{X}}(\theta|\vec{x}) d\theta = 1 - \alpha
+        \end{equation}
+    \end{definition}
+
+    \pause
+
+    \begin{alertblock}{Interpretación Bayesiana vs Frecuentista}
+        \begin{itemize}
+            \item \textbf{Bayesiano}: "Dada la evidencia $\vec{x}$, la probabilidad de que $\Theta \in C$ es $1-\alpha$" (probabilidad sobre $\Theta$, que es aleatorio)
+            \item \textbf{Frecuentista (IC)}: "Si repetimos el experimento, el $(1-\alpha) \times 100\%$ de los intervalos contendrán el valor verdadero de $\theta$" (frecuencia sobre muestras, $\theta$ fijo)
+        \end{itemize}
+
+        La interpretación bayesiana es más directa e intuitiva.
+    \end{alertblock}
+\end{frame}

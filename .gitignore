@@ -68,6 +68,22 @@ data/out/*
 !report/**/*.png
 
 # =============================================================================
+# IM�GENES EN presentation
+# =============================================================================
+
+# Permitir todas las carpetas necesarias para llegar a presentation/images/
+!presentation/
+!presentation/*.tex
+!presentation/*/
+!presentation/*/*.tex
+!presentation/*/*/
+
+# Permitir im�genes solo dentro de presentation/ y subcarpetas
+!presentation/**/*.jpg
+!presentation/**/*.jpeg
+!presentation/**/*.png
+
+# =============================================================================
 # ESTRUCTURA DE DIRECTORIOS
 # =============================================================================
 

@@ -1,0 +1,36 @@
+%% ==== TEMA Y COLORES DE BEAMER ====
+\usetheme{metropolis}
+\usecolortheme{crane}
+
+%% ==== CONFIGURACIÓN DE FUENTES ====
+\renewcommand{\familydefault}{\sfdefault}
+\usefonttheme{professionalfonts}
+
+%% ==== COLORES PERSONALIZADOS ====
+\definecolor{unal_green}{RGB}{21, 95, 131}
+\definecolor{unal_blue}{RGB}{0, 40, 85}
+\definecolor{accent_red}{RGB}{204, 51, 17}
+
+%% ==== CONFIGURACIÓN DE COLORES DEL TEMA ====
+\setbeamercolor{palette primary}{bg=unal_green, fg=white}
+\setbeamercolor{palette secondary}{bg=unal_blue, fg=white}
+\setbeamercolor{palette tertiary}{bg=white, fg=unal_blue}
+\setbeamercolor{frametitle}{bg=unal_green, fg=white}
+\setbeamercolor{title}{fg=unal_blue}
+\setbeamercolor{subtitle}{fg=unal_green}
+
+%% ==== CONFIGURACIÓN DE ELEMENTOS ====
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{enumerate items}[default]
+
+%% ==== INFORMACIÓN DEL DOCUMENTO ====
+\title{Estimación Bayesiana y Credibilidad}
+\subtitle{Prior Continua}
+\author[Acuña et al.]{José Miguel Acuña Hernández \\ Andrés Steven Puertas Londoño \\ Guillermo Eduardo Murillo Tirado}
+\institute[UNAL]{Universidad Nacional de Colombia \\ Facultad de Ciencias \\ Departamento de Matemáticas \\ Maestría en Actuaría y Finanzas}
+\date{\today}
+
+%% ==== CONFIGURACIONES ADICIONALES ====
+\setbeamersize{text margin left=1em, text margin right=1em}

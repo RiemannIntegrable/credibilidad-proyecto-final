@@ -1,0 +1,199 @@
+\section{Ejercicios I}
+
+\begin{frame}{Ejercicio 42.4 [4B-S98:13]}
+    \begin{block}{Enunciado}
+        Se tiene la siguiente información:
+
+        La cantidad de reclamaciones para un riesgo dado sigue una distribución con función de probabilidad
+        \[
+        p(n) = (e^\lambda - 1)^{-1} \frac{\lambda^n}{n!}, \quad n = 1, 2, \ldots, \quad \lambda > 0
+        \]
+
+        Los tamaños de las reclamaciones para este riesgo siguen una distribución con función de densidad
+        \[
+        f(x) = e^{-x}, \quad 0 < x < \infty
+        \]
+
+        Para este riesgo, el número de reclamaciones y los tamaños de las reclamaciones son independientes. Determinar la probabilidad de que la reclamación más grande para este riesgo sea menor que $k$.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Ejercicio 42.4 - Opciones}
+    \begin{enumerate}[(A)]
+        \item $e^\lambda - 1$
+        \item $(e^\lambda - 1)(\exp(\lambda(1 - e^{-k})) - 1)$
+        \item $(e^\lambda - 1)(\exp(\lambda(1 - e^{-k})))$
+        \item $(e^\lambda - 1)^{-1}(\exp(\lambda(1 - e^{-k})) - 1)$
+        \item $(e^\lambda - 1)^{-1}(\exp(\lambda(1 - e^{-k})))$
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Ejercicio 42.4 - Solución (1/3)}
+    Sea $X_{\text{largest}}$ la reclamación más grande. Cuando hay $n$ reclamaciones, denotamos sus tamaños individuales como $X_1, X_2, \ldots, X_n$, que son variables aleatorias independientes e idénticamente distribuidas con densidad $f(x) = e^{-x}$. La reclamación más grande es $X_{\text{largest}} = \max\{X_1, X_2, \ldots, X_n\}$.
+
+    Usando la ley de probabilidad total:
+    \[
+    \Pr(X_{\text{largest}} < k) = \sum_{n=1}^{\infty} \Pr(N = n) \Pr(X_{\text{largest}} < k \mid N = n)
+    \]
+
+    La probabilidad de que una reclamación individual sea menor que $k$ es:
+    \[
+    P(X_i < k) = \int_0^k e^{-x} dx = 1 - e^{-k}
+    \]
+\end{frame}
+
+\begin{frame}{Ejercicio 42.4 - Solución (2/3)}
+    Para que el máximo de $n$ reclamaciones sea menor que $k$, todas las reclamaciones deben ser menores que $k$. Por independencia:
+    \[
+    \Pr(X_{\text{largest}} < k \mid N = n) = \prod_{i=1}^n P(X_i < k) = (1 - e^{-k})^n
+    \]
+
+    Sustituyendo en la expresión original:
+    \[
+    \Pr(X_{\text{largest}} < k) = \sum_{n=1}^{\infty} P(N = n) (1 - e^{-k})^n = \sum_{n=1}^{\infty} (e^\lambda - 1)^{-1} \frac{\lambda^n}{n!} (1 - e^{-k})^n
+    \]
+    \[
+    = \sum_{n=1}^{\infty} (e^\lambda - 1)^{-1} \frac{(\lambda(1 - e^{-k}))^n}{n!}
+    \]
+\end{frame}
+
+\begin{frame}{Ejercicio 42.4 - Solución (3/3)}
+    Por la serie de Taylor, $e^x = \sum_{n=0}^{\infty} \frac{x^n}{n!}$. Si hacemos $x = \lambda(1 - e^{-k})$, la expresión anterior se convierte en:
+    \[
+    \Pr(X_{\text{largest}} < k) = \frac{1}{e^\lambda - 1} \left( e^{\lambda(1 - e^{-k})} - 1 \right)
+    \]
+
+    \textbf{Respuesta: (D)}
+\end{frame}
+
+\begin{frame}{Ejercicio 42.5 [4-S01:37]}
+    \begin{block}{Enunciado}
+        Se tiene la siguiente información sobre cobertura de compensación de trabajadores:
+
+        El número de reclamaciones para un empleado durante el año sigue una distribución de Poisson con media $(100 - p)/100$, donde $p$ es el salario (en miles) del empleado.
+
+        La distribución de $p$ es uniforme en el intervalo $(0, 100]$.
+
+        Se selecciona un empleado al azar y no se observaron reclamaciones para este empleado durante el año. Determinar la probabilidad posterior de que el empleado seleccionado tenga un salario mayor que 50 mil.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Ejercicio 42.5 - Opciones}
+    \begin{enumerate}[(A)]
+        \item 0.5
+        \item 0.6
+        \item 0.7
+        \item 0.8
+        \item 0.9
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Ejercicio 42.5 - Solución (1/3)}
+    Sea $X$ el número de reclamaciones observadas para el empleado seleccionado. Dado que $X \mid p \sim \text{Poisson}\left(\frac{100-p}{100}\right)$, la función de masa de probabilidad es:
+    \[
+    f_{X|P}(x | p) = \frac{e^{-\lambda} \lambda^x}{x!}, \quad \text{donde } \lambda = \frac{100-p}{100}
+    \]
+
+    La verosimilitud de observar 0 reclamaciones es:
+    \[
+    f_{X|P}(0 | p) = \frac{e^{-(100-p)/100} \left(\frac{100-p}{100}\right)^0}{0!} = e^{-(100-p)/100}
+    \]
+
+    La distribución a priori de $p$ es uniforme en $(0, 100]$:
+    \[
+    f_P(p) = \frac{1}{100}, \quad 0 < p \leq 100
+    \]
+\end{frame}
+
+\begin{frame}{Ejercicio 42.5 - Solución (2/3)}
+    Por el teorema de Bayes, la densidad posterior es:
+    \[
+    f_{P|X}(p | 0) = \frac{f_{X|P}(0 | p) \cdot f_P(p)}{\int_0^{100} f_{X|P}(0 | p) \cdot f_P(p) \, dp} = \frac{e^{-(100-p)/100}}{\int_0^{100} e^{-(100-p)/100} dp}
+    \]
+
+    La probabilidad posterior de que $p > 50$ es:
+    \[
+    P(P > 50 | X = 0) = \frac{\int_{50}^{100} e^{-(100-p)/100} dp}{\int_0^{100} e^{-(100-p)/100} dp}
+    \]
+\end{frame}
+
+\begin{frame}{Ejercicio 42.5 - Solución (3/3)}
+    Calculamos el denominador. Haciendo el cambio de variable $u = (100-p)/100$, entonces $du = -dp/100$. Cuando $p = 0$, $u = 1$; cuando $p = 100$, $u = 0$:
+    \[
+    \int_0^{100} e^{-(100-p)/100} dp = 100 \int_1^0 e^{-u} (-du) = 100 \int_0^1 e^{-u} du = 100(1 - e^{-1})
+    \]
+
+    Calculamos el numerador con el mismo cambio de variable. Cuando $p = 50$, $u = 0.5$; cuando $p = 100$, $u = 0$:
+    \[
+    \int_{50}^{100} e^{-(100-p)/100} dp = 100 \int_{0.5}^{0} e^{-u} (-du) = 100 \int_{0}^{0.5} e^{-u} du = 100(1 - e^{-0.5})
+    \]
+
+    Finalmente:
+    \[
+    P(P > 50 | X = 0) = \frac{100(1 - e^{-0.5})}{100(1 - e^{-1})} = \frac{1 - e^{-0.5}}{1 - e^{-1}} \approx 0.6225
+    \]
+
+    \textbf{Respuesta: (B)}
+\end{frame}
+
+\begin{frame}{Ejercicio 42.9 [4B-S98:8]}
+    \begin{block}{Enunciado}
+        Se tiene la siguiente información:
+
+        El número de reclamaciones durante un período de exposición sigue una distribución de Bernoulli con media $p$.
+
+        La función de densidad a priori de $p$ es:
+        \[
+        f(p) = \frac{\pi}{2} \sin \frac{\pi p}{2}, \quad 0 < p < 1
+        \]
+
+        Se observa la experiencia de reclamaciones para un período de exposición y no se observan reclamaciones. Determinar la función de densidad posterior de $p$.
+
+        \textbf{Pista:} $\int_0^1 \frac{\pi p}{2} \sin \frac{\pi p}{2} dp = \frac{2}{\pi}$ y $\int_0^1 \frac{\pi p^2}{2} \sin \frac{\pi p}{2} dp = \frac{4}{\pi^2}(\pi - 2)$.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Ejercicio 42.9 - Opciones}
+    \begin{enumerate}[(A)]
+        \item $\frac{\pi}{2} \sin \frac{\pi p}{2}, \quad 0 < p < 1$
+
+        \item $\frac{\pi p}{2} \sin \frac{\pi p}{2}, \quad 0 < p < 1$
+
+        \item $\frac{\pi(1-p)}{2} \sin \frac{\pi p}{2}, \quad 0 < p < 1$
+
+        \item $\frac{\pi^2}{4} \sin \frac{\pi p}{2}, \quad 0 < p < 1$
+
+        \item $\frac{\pi^2(1-p)}{2(\pi - 2)} \sin \frac{\pi p}{2}, \quad 0 < p < 1$
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Ejercicio 42.9 - Solución (1/2)}
+    Sea $X$ el número de reclamaciones. La función de masa de probabilidad condicional de $X$ dado $p$ es:
+    \[
+    f_{X|P}(x | p) = \begin{cases} 1 - p & x = 0 \\ p & x = 1 \end{cases}
+    \]
+
+    La función de densidad conjunta de observar 0 reclamaciones es:
+    \[
+    f_P(p) f_{0|P}(0 | p) = \left(\frac{\pi}{2} \sin \frac{\pi p}{2}\right) (1 - p)
+    \]
+
+    La densidad marginal de observar 0 reclamaciones es:
+    \[
+    f_{P|X}(p | 0) = \frac{(\pi/2)(1-p)\sin(\pi p/2)}{\int_0^1 (\pi/2)(1-p)\sin(\pi p/2) dp}
+    \]
+\end{frame}
+
+\begin{frame}{Ejercicio 42.9 - Solución (2/2)}
+    Usando las pistas proporcionadas, el denominador es:
+    \[
+    \int_0^1 \frac{\pi}{2}(1-p)\sin \frac{\pi p}{2} dp = \int_0^1 \frac{\pi}{2} \sin \frac{\pi p}{2} dp - \int_0^1 \frac{\pi p}{2} \sin \frac{\pi p}{2} dp = 1 - \frac{2}{\pi}
+    \]
+
+    Por lo tanto, la densidad posterior es:
+    \[
+    f_{P|X}(p | 0) = \frac{(\pi/2)(1-p)\sin(\pi p/2)}{1 - 2/\pi} = \frac{\pi^2(1-p)}{2(\pi - 2)} \sin \frac{\pi p}{2}
+    \]
+
+    \textbf{Respuesta: (E)}
+\end{frame}

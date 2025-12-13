@@ -1,0 +1,41 @@
+\documentclass{beamer}
+
+% Importar configuración
+\input{config/packages}
+\input{config/beamer_style}
+\input{config/commands}
+
+\begin{document}
+
+% Diapositiva de título
+\begin{frame}
+    \titlepage
+\end{frame}
+
+% Incluir slides del contenido
+\input{content/introduccion}
+\input{content/teoria}
+\input{content/ejercicios1}
+\input{content/ejercicios2}
+
+% Referencias bibliográficas
+\begin{frame}[allowframebreaks]{Referencias}
+    \bibliographystyle{plain}
+    \bibliography{references}
+\end{frame}
+
+% Slide de agradecimientos
+\begin{frame}
+    \centering
+    \Huge \textbf{¡Gracias por su atención!}
+
+    \vspace{1em}
+
+    \Large ¿Preguntas?
+
+    \vspace{1.5em}
+
+    \includegraphics[width=0.5\textwidth]{images/tabla.jpg}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,50 @@
+\section{Introducción}
+
+\begin{frame}{Material de Referencia}
+    \begin{block}{Fuentes Bibliográficas}
+        Esta presentación está basada completamente en:
+
+        \begin{itemize}
+            \item \textbf{ACTEX Lesson 42}: Bayesian Estimation and Credibility - Continuous Prior \cite{actex_lesson_42}
+            \begin{itemize}
+                \item Teoría fundamental
+                \item Ejercicios y aplicaciones
+            \end{itemize}
+
+            \vspace{0.5em}
+
+            \item \textbf{ACTEX Lesson 35}: Bayesian Estimation and Credibility - Discrete Prior \cite{actex_35}
+            \begin{itemize}
+                \item Notación matemática adoptada
+                \item Convenciones de subíndices
+            \end{itemize}
+        \end{itemize}
+    \end{block}
+
+    \begin{alertblock}{Nota}
+        Todos los ejercicios, teoremas y definiciones provienen de estos manuales de estudio para el examen STAM.
+    \end{alertblock}
+\end{frame}
+
+\begin{frame}{Motivación: El Problema del Asegurador}
+    \begin{block}{Escenario}
+        Un asegurador desea estimar la tasa de siniestralidad $\lambda$ de un nuevo asegurado, sabiendo que:
+        \begin{itemize}
+            \item El número de siniestros por año sigue una distribución Poisson($\lambda$)
+            \item El parámetro $\lambda$ varía entre asegurados (heterogeneidad)
+            \item Disponemos de información previa sobre la población
+        \end{itemize}
+    \end{block}
+
+    \pause
+
+    \begin{exampleblock}{Pregunta Fundamental}
+        ¿Cómo combinar la información previa de la población con la experiencia observada del asegurado para obtener la mejor estimación de $\lambda$?
+    \end{exampleblock}
+
+    \pause
+
+    \begin{alertblock}{Respuesta}
+        \textbf{Métodos Bayesianos de Credibilidad} con distribuciones continuas
+    \end{alertblock}
+\end{frame}

@@ -1,0 +1,312 @@
+\section{Ejercicios II}
+
+\begin{frame}{Problema 42.11 - Prior y Verosimilitud Uniformes}
+    \begin{block}{Enunciado}
+        El tamaño de la reclamación sigue una distribución uniforme en $[0, \theta]$. $\theta$ sigue una distribución uniforme en $[5, 10]$. Se presenta una reclamación de 6.
+
+        \begin{enumerate}[(a)]
+            \item Calcular la esperanza del tamaño de la próxima reclamación.
+            \item Calcular la probabilidad de que la próxima reclamación sea mayor que 5.
+        \end{enumerate}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Problema 42.11 - Configuración}
+    \begin{block}{Configuración}
+        \begin{itemize}
+            \item \textbf{Distribución prior:} $\Theta \sim \text{Uniforme}[5, 10]$
+            \item \textbf{Verosimilitud:} Dado $\Theta = \theta$, el tamaño de reclamación $X \sim \text{Uniforme}[0, \theta]$
+            \item \textbf{Observación:} $x = 6$
+            \item \textbf{Restricción:} Necesitamos $\theta \geq 6$ para que la verosimilitud sea positiva
+        \end{itemize}
+    \end{block}
+\end{frame}
+
+\begin{frame}{Problema 42.11 - Paso 1: Encontrar la Distribución Posterior}
+    Usando el teorema de Bayes:
+    \begin{equation}
+        \pi(\theta | x) = \frac{f(x|\theta) \cdot \pi(\theta)}{\int f(x|\theta) \cdot \pi(\theta) d\theta}
+    \end{equation}
+
+    \textbf{Densidad prior:}
+    \begin{equation}
+        \pi(\theta) = \frac{1}{10-5} = \frac{1}{5} \quad \text{para } 5 \leq \theta \leq 10
+    \end{equation}
+
+    \textbf{Verosimilitud:}
+    \begin{equation}
+        f(x|\theta) = \frac{1}{\theta} \quad \text{para } 0 \leq x \leq \theta
+    \end{equation}
+
+    Como $x = 6$, necesitamos $\theta \geq 6$, entonces el soporte se convierte en $6 \leq \theta \leq 10$.
+\end{frame}
+
+\begin{frame}{Problema 42.11 - Cálculo de la Posterior}
+    \textbf{Numerador:}
+    \begin{equation}
+        f(x|\theta) \cdot \pi(\theta) = \frac{1}{\theta} \cdot \frac{1}{5} = \frac{1}{5\theta}
+    \end{equation}
+
+    \textbf{Denominador (constante normalizadora):}
+    \begin{align}
+        \int_6^{10} \frac{1}{5\theta} d\theta &= \frac{1}{5} \int_6^{10} \frac{1}{\theta} d\theta \\
+        &= \frac{1}{5}[\ln\theta]_6^{10} \\
+        &= \frac{1}{5}(\ln 10 - \ln 6) \\
+        &= \frac{\ln(10/6)}{5} = \frac{\ln(5/3)}{5}
+    \end{align}
+
+    \textbf{Posterior:}
+    \begin{equation}
+        \pi(\theta|x) = \frac{1}{\theta \ln(5/3)} \quad \text{para } 6 \leq \theta \leq 10
+    \end{equation}
+\end{frame}
+
+\begin{frame}{Problema 42.11 - Paso 2: Media Posterior}
+    Calculando la media posterior $E[\Theta|x = 6]$:
+
+    \begin{align}
+        E[\Theta | x=6] &= \int_6^{10} \theta \cdot \frac{1}{\theta \ln(5/3)} d\theta \\
+        &= \frac{1}{\ln(5/3)} \int_6^{10} 1 \, d\theta \\
+        &= \frac{1}{\ln(5/3)} \cdot (10-6) \\
+        &= \frac{4}{\ln(5/3)}
+    \end{align}
+\end{frame}
+
+\begin{frame}{Problema 42.11 - Paso 3: Esperanza Predictiva (a)}
+    \textbf{Marco Matemático:}
+
+    Por el teorema de Fubini, podemos intercambiar el orden de integración:
+    \begin{align}
+        E[X_{\text{nueva}} | x=6] &= \int_6^{10} E[X_{\text{nueva}}|\Theta = \theta] \cdot \pi(\theta|x=6) d\theta
+    \end{align}
+
+    Como $X_{\text{nueva}} | \Theta=\theta \sim \text{Uniforme}[0, \theta]$, tenemos:
+    \begin{equation}
+        E[X_{\text{nueva}}|\Theta = \theta] = \frac{\theta}{2}
+    \end{equation}
+\end{frame}
+
+\begin{frame}{Problema 42.11 - Solución (a)}
+    Por lo tanto:
+    \begin{align}
+        E[X_{\text{nueva}} | x=6] &= \int_6^{10} \frac{\theta}{2} \cdot \frac{1}{\theta \ln(5/3)} d\theta \\
+        &= \frac{1}{2\ln(5/3)} \int_6^{10} 1 \, d\theta \\
+        &= \frac{1}{2\ln(5/3)} \cdot 4 \\
+        &= \frac{2}{\ln(5/3)} \\
+        &\approx 3.9152
+    \end{align}
+
+    Alternativamente, por la ley de esperanza total:
+    \begin{equation}
+        E[X_{\text{nueva}}|x=6] = E_{\Theta|x=6}[\Theta/2] = \frac{1}{2}E_{\Theta|x=6}[\Theta] = \frac{1}{2} \cdot \frac{4}{\ln(5/3)} = \frac{2}{\ln(5/3)}
+    \end{equation}
+
+    \textbf{Respuesta al inciso (a):} $\boxed{3.9152}$
+\end{frame}
+
+\begin{frame}{Problema 42.11 - Paso 4: Probabilidad Próxima Reclamación $> 5$ (b)}
+    \begin{align}
+        P(X_{\text{nueva}} > 5 | x=6) &= \int_6^{10} P(X_{\text{nueva}} > 5 | \Theta = \theta) \cdot \pi(\theta|x=6) d\theta
+    \end{align}
+
+    Para una distribución uniforme en $[0, \theta]$:
+    \begin{itemize}
+        \item Si $\theta \leq 5$: $P(X > 5|\theta) = 0$
+        \item Si $\theta > 5$: $P(X > 5|\theta) = \frac{\theta-5}{\theta}$
+    \end{itemize}
+
+    Como nuestro soporte posterior es $[6, 10]$, todos los valores tienen $\theta > 5$:
+
+    \begin{equation}
+        P(X_{\text{nueva}} > 5 | x=6) = \int_6^{10} \frac{\theta-5}{\theta} \cdot \frac{1}{\theta \ln(5/3)} d\theta
+    \end{equation}
+\end{frame}
+
+\begin{frame}{Problema 42.11 - Solución (b)}
+    \begin{align}
+        P(X_{\text{nueva}} > 5 | x=6) &= \frac{1}{\ln(5/3)} \int_6^{10} \frac{\theta-5}{\theta^2} d\theta \\
+        &= \frac{1}{\ln(5/3)} \int_6^{10} \left(\frac{1}{\theta} - \frac{5}{\theta^2}\right) d\theta \\
+        &= \frac{1}{\ln(5/3)} \left[\ln\theta + \frac{5}{\theta}\right]_6^{10} \\
+        &= \frac{1}{\ln(5/3)} \left[\left(\ln 10 + 0.5\right) - \left(\ln 6 + \frac{5}{6}\right)\right] \\
+        &= \frac{1}{\ln(5/3)} \left[\ln(5/3) + 0.5 - \frac{5}{6}\right] \\
+        &= \frac{1}{\ln(5/3)} \left[\ln(5/3) - \frac{1}{3}\right] \\
+        &= 1 - \frac{1}{3\ln(5/3)} \approx 0.3473
+    \end{align}
+
+    \textbf{Respuesta al inciso (b):} $\boxed{0.3473}$
+\end{frame}
+
+\begin{frame}{Problema 42.15 - Cálculo de Prima Bayesiana}
+    \begin{block}{Enunciado}
+        Se tiene:
+        \begin{enumerate}[(i)]
+            \item El monto de una reclamación, $X$, se distribuye uniformemente en el intervalo $[0, \theta]$.
+            \item La densidad prior de $\theta$ es $\pi(\theta) = 500/\theta^2$, $\theta > 500$.
+        \end{enumerate}
+
+        Se observan dos reclamaciones, $x_1 = 400$ y $x_2 = 600$. Se calcula la distribución posterior como:
+        \begin{equation}
+            f(\theta | x_1, x_2) = 3\left(\frac{600^3}{\theta^4}\right), \quad \theta > 600
+        \end{equation}
+
+        Calcular la prima bayesiana, $E[X_3 | x_1, x_2]$.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Problema 42.15 - Paso 1: Verificar la Distribución Posterior}
+    Con dos reclamaciones independientes, la verosimilitud es:
+    \begin{equation}
+        f(x_1, x_2|\theta) = \frac{1}{\theta} \cdot \frac{1}{\theta} = \frac{1}{\theta^2}
+    \end{equation}
+    para $\theta \geq \max(x_1, x_2) = 600$.
+
+    La posterior es proporcional a:
+    \begin{align}
+        \pi(\theta|x_1, x_2) &\propto f(x_1, x_2|\theta) \cdot \pi(\theta) \\
+        &= \frac{1}{\theta^2} \cdot \frac{500}{\theta^2} \\
+        &= \frac{500}{\theta^4}
+    \end{align}
+\end{frame}
+
+\begin{frame}{Problema 42.15 - Constante Normalizadora}
+    La constante normalizadora:
+    \begin{align}
+        \int_{600}^{\infty} \frac{500}{\theta^4} d\theta &= 500 \left[-\frac{1}{3\theta^3}\right]_{600}^{\infty} \\
+        &= 500 \cdot \frac{1}{3 \cdot 600^3} \\
+        &= \frac{500}{3 \cdot 600^3}
+    \end{align}
+
+    Por lo tanto:
+    \begin{equation}
+        \pi(\theta|x_1, x_2) = \frac{500/\theta^4}{500/(3 \cdot 600^3)} = \frac{3 \cdot 600^3}{\theta^4}
+    \end{equation}
+
+    Esto coincide con la posterior dada. \checkmark
+\end{frame}
+
+\begin{frame}{Problema 42.15 - Paso 2: Calcular la Prima Bayesiana}
+    Usando la ley de esperanza total (vía teorema de Fubini):
+    \begin{equation}
+        E[X_3|x_1, x_2] = \int_{600}^{\infty} E[X_3|\theta] \cdot \pi(\theta|x_1, x_2) d\theta
+    \end{equation}
+
+    Como $X_3|\theta \sim \text{Uniforme}[0, \theta]$, tenemos $E[X_3|\theta] = \theta/2$.
+
+    \begin{align}
+        E[X_3|x_1, x_2] &= \int_{600}^{\infty} \frac{\theta}{2} \cdot \frac{3 \cdot 600^3}{\theta^4} d\theta \\
+        &= \frac{3 \cdot 600^3}{2} \int_{600}^{\infty} \frac{1}{\theta^3} d\theta
+    \end{align}
+\end{frame}
+
+\begin{frame}{Problema 42.15 - Solución}
+    Continuando:
+    \begin{align}
+        E[X_3|x_1, x_2] &= \frac{3 \cdot 600^3}{2} \left[-\frac{1}{2\theta^2}\right]_{600}^{\infty} \\
+        &= \frac{3 \cdot 600^3}{2} \cdot \frac{1}{2 \cdot 600^2} \\
+        &= \frac{3 \cdot 600}{4} \\
+        &= \frac{1800}{4} \\
+        &= 450
+    \end{align}
+
+    \textbf{Respuesta:} $\boxed{450}$
+
+    \begin{block}{Observación Clave}
+        Observar reclamaciones de 400 y 600 nos dice que $\theta$ debe ser al menos 600, lo cual actualiza nuestra distribución prior. La prima bayesiana para la próxima reclamación es 450.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Problema 42.16 - Distribución Pareto con Prior}
+    \begin{block}{Enunciado}
+        Se tiene:
+        \begin{enumerate}[(i)]
+            \item La distribución prior del parámetro $\Theta$ tiene función de densidad de probabilidad:
+            \begin{equation}
+                \pi(\theta) = \frac{2}{\theta^2}, \quad 1 < \theta < \infty
+            \end{equation}
+            \item Dado $\Theta = \theta$, los tamaños de reclamación siguen una distribución Pareto con parámetros $\alpha = 2$ y $\theta$.
+        \end{enumerate}
+
+        Se observa una reclamación de 3.
+
+        Calcular la probabilidad posterior de que $\Theta$ exceda 2.
+    \end{block}
+\end{frame}
+
+\begin{frame}{Problema 42.16 - Paso 1: Recordar la Distribución Pareto}
+    Para una distribución Pareto con parámetros $\alpha$ y $\theta$:
+    \begin{equation}
+        f(x|\theta) = \frac{\alpha \theta^\alpha}{(x+\theta)^{\alpha+1}}, \quad x > 0
+    \end{equation}
+
+    Con $\alpha = 2$:
+    \begin{equation}
+        f(x|\theta) = \frac{2\theta^2}{(x+\theta)^3}
+    \end{equation}
+\end{frame}
+
+\begin{frame}{Problema 42.16 - Paso 2: Encontrar la Distribución Posterior}
+    Usando el teorema de Bayes:
+    \begin{equation}
+        \pi(\theta|x) = \frac{f(x|\theta) \cdot \pi(\theta)}{\int_1^{\infty} f(x|\theta) \cdot \pi(\theta) d\theta}
+    \end{equation}
+
+    \textbf{Numerador:}
+    \begin{align}
+        f(x|\theta) \cdot \pi(\theta) &= \frac{2\theta^2}{(x+\theta)^3} \cdot \frac{2}{\theta^2} \\
+        &= \frac{4}{(x+\theta)^3}
+    \end{align}
+
+    Con $x = 3$:
+    \begin{equation}
+        = \frac{4}{(3+\theta)^3}
+    \end{equation}
+\end{frame}
+
+\begin{frame}{Problema 42.16 - Constante Normalizadora}
+    \textbf{Denominador (constante normalizadora):}
+    \begin{equation}
+        \int_1^{\infty} \frac{4}{(3+\theta)^3} d\theta
+    \end{equation}
+
+    Sea $u = 3 + \theta$, entonces $du = d\theta$. Cuando $\theta = 1$, $u = 4$; cuando $\theta \to \infty$, $u \to \infty$:
+
+    \begin{align}
+        &= 4\int_4^{\infty} \frac{1}{u^3} du \\
+        &= 4\left[-\frac{1}{2u^2}\right]_4^{\infty} \\
+        &= 4 \cdot \frac{1}{2 \cdot 16} \\
+        &= \frac{4}{32} = \frac{1}{8}
+    \end{align}
+\end{frame}
+
+\begin{frame}{Problema 42.16 - Distribución Posterior}
+    \textbf{Posterior:}
+    \begin{equation}
+        \pi(\theta|x=3) = \frac{4/(3+\theta)^3}{1/8} = \frac{32}{(3+\theta)^3}
+    \end{equation}
+\end{frame}
+
+\begin{frame}{Problema 42.16 - Paso 3: Calcular $P(\Theta > 2 | x = 3)$}
+    \begin{equation}
+        P(\Theta > 2 | x=3) = \int_2^{\infty} \pi(\theta|x=3) d\theta
+    \end{equation}
+
+    \begin{equation}
+        = \int_2^{\infty} \frac{32}{(3+\theta)^3} d\theta
+    \end{equation}
+
+    Sea $u = 3 + \theta$, entonces $du = d\theta$. Cuando $\theta = 2$, $u = 5$; cuando $\theta \to \infty$, $u \to \infty$:
+
+    \begin{align}
+        &= 32\int_5^{\infty} \frac{1}{u^3} du \\
+        &= 32\left[-\frac{1}{2u^2}\right]_5^{\infty} \\
+        &= \frac{32}{50} = \frac{16}{25} = 0.64
+    \end{align}
+\end{frame}
+
+\begin{frame}{Problema 42.16 - Solución}
+    \textbf{Respuesta:} $\boxed{0.64}$
+
+    \begin{block}{Observación Clave}
+        La observación de una reclamación de tamaño 3 actualiza nuestra creencia sobre $\theta$. Dada esta observación, hay una probabilidad del 64\% de que $\theta$ exceda 2.
+    \end{block}
+\end{frame}
